@@ -1,5 +1,7 @@
 import {Component } from '@angular/core';
+
 import { SelectService } from '../../../services/select.service';
+import { ICard } from '../../../interfaces/icard';
 
 @Component({
   selector: 'app-white-card',
@@ -8,6 +10,7 @@ import { SelectService } from '../../../services/select.service';
 })
 export class WhiteCardComponent {
   public select = false;
+  public card: ICard = {id: 0, content: 'Test White Card' };
 
   constructor(private selectService: SelectService) {
     this.selectService.selectSub().subscribe(() => {
