@@ -19,7 +19,7 @@ export class WhiteCardComponent {
   }
 
   selectCard() {
-    this.selectService.selectWhiteCard();
+    this.selectService.selectWhiteCard(this.card.id);
     this.select = true;
   }
 }

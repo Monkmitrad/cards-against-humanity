@@ -5,7 +5,7 @@
             <span class="ml-auto">{{ card.id }}</span>
         </div><!--/.row-->
     </div><!--/.card-header-->
-    <div class="card-body">
+    <div class="card-body" [ngClass]="select ? 'selected' : ''">
         {{ card.content }}
     </div><!--/.card-body-->
     <div class="card-footer" [ngClass]="select ? 'selected' : ''">
