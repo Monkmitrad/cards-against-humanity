@@ -1,10 +1,10 @@
-<div class="card" (click)="select=!select" [ngClass]="select ? 'selected' : ''">
-    <div class="card-header">
+<div class="card" (click)="selectCard()" [ngClass]="select ? 'selected' : ''">
+    <div class="card-header" [ngClass]="select ? 'selected' : ''">
         <div class="row">
             <h5>White Card</h5>
         </div><!--/.row-->
     </div>
-    <div class="card-footer">
+    <div class="card-footer" [ngClass]="select ? 'selected' : ''">
         <div class="row">
             <img src="assets/img/brand/CAH_light.png" width="158" height="34">
         </div><!--/.row-->
