@@ -6,6 +6,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
+import { WhiteCardComponent } from '../../containers/play-cards/white-card';
+import { BlackCardComponent } from '../../containers/play-cards/black-card';
 
 @NgModule({
   imports: [
@@ -15,6 +17,10 @@ import { GameRoutingModule } from './game-routing.module';
     BsDropdownModule,
     ButtonsModule.forRoot()
   ],
-  declarations: [ GameComponent ]
+  declarations: [
+    GameComponent,
+    WhiteCardComponent,
+    BlackCardComponent,
+  ]
 })
 export class GameModule { }
