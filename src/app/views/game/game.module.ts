@@ -8,6 +8,7 @@ import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
 import { WhiteCardComponent } from '../../containers/play-cards/white-card';
 import { BlackCardComponent } from '../../containers/play-cards/black-card';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { BlackCardComponent } from '../../containers/play-cards/black-card';
     GameRoutingModule,
     ChartsModule,
     BsDropdownModule,
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    CommonModule
   ],
   declarations: [
     GameComponent,

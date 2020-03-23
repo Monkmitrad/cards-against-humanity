@@ -2,3 +2,7 @@
     background: white;
     color: black;
 }
+
+.selected {
+    background: blue;
+}

@@ -6,5 +6,5 @@ import {Component } from '@angular/core';
   styleUrls: ['./white-card.component.css']
 })
 export class WhiteCardComponent {
-
+  public select = false;
 }
