@@ -41,7 +41,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
@@ -58,7 +58,7 @@ import { HttpClientModule } from '@angular/common/http';
     TabsModule.forRoot(),
     ChartsModule,
     FormsModule,
-    HttpClientModule
+    SharedModule
   ],
   declarations: [
     AppComponent,
@@ -68,10 +68,9 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     RegisterComponent,
   ],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

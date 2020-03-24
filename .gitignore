@@ -45,4 +45,4 @@ testem.log
 Thumbs.db
 
 # own config file
-src/app/services/config.json
+src/environments/config.json

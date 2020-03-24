@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
-import * as config from './config.json';
+import * as config from '../../environments/config.json';
 import { Router } from '@angular/router';
 
 interface AuthResponseData {
@@ -27,7 +27,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   signup(email: string, password: string) {
-    const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + config[0].google_api_key;
+    const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + config.google_api_key;
     console.log(url);
     return this.http.post<AuthResponseData>(url,
       {
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   signin(email: string, password2: string) {
-    const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + config[0].google_api_key;
+    const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + config.google_api_key;
     return this.http.post<AuthResponseData>(url,
       {
         email: email,

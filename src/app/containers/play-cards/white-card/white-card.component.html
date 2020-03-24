@@ -1,9 +1,7 @@
-<div class="card" (click)="selectCard()" [ngClass]="select ? 'selected' : ''">
+<div class="card border-secondary" (click)="selectCard()" [ngClass]="select ? 'selected' : ''">
     <div class="card-header" [ngClass]="select ? 'selected' : ''">
-        <div class="row">
-            <h5>White Card</h5>
-            <span class="ml-auto">{{ card.id }}</span>
-        </div><!--/.row-->
+        <h5>White Card</h5>
+        <span class="ml-auto">{{ card.id }}</span>
     </div><!--/.card-header-->
     <div class="card-body" [ngClass]="select ? 'selected' : ''">
         {{ card.content }}
