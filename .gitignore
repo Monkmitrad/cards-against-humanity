@@ -43,3 +43,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# own config file
+src/app/services/config.json
