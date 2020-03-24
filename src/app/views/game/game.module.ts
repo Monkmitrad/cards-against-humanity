@@ -6,9 +6,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
-import { WhiteCardComponent } from '../../containers/play-cards/white-card';
-import { BlackCardComponent } from '../../containers/play-cards/black-card';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,12 +16,11 @@ import { CommonModule } from '@angular/common';
     ChartsModule,
     BsDropdownModule,
     ButtonsModule.forRoot(),
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
   declarations: [
-    GameComponent,
-    WhiteCardComponent,
-    BlackCardComponent,
+    GameComponent
   ]
 })
 export class GameModule { }

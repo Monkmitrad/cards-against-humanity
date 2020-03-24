@@ -22,13 +22,11 @@ export class LoginComponent {
     const password = form.value.password;
 
     this.authService.signin(email, password).subscribe(resData => {
-      console.log(resData);
       this.router.navigate(['/game']);
     }, errorMessage => {
       console.log(errorMessage);
       this.error = errorMessage;
     });
-    console.log(form.value);
     form.reset();
   }
 }

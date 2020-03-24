@@ -8,6 +8,7 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -46,6 +47,7 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
+    canActivate: [AuthGuard],
     data: {
       title: 'Cards Against Humanity'
     },
@@ -54,6 +56,10 @@ export const routes: Routes = [
         path: 'game',
         loadChildren: () => import('./views/game/game.module').then(m => m.GameModule)
       },
+      {
+        path: 'decks',
+        loadChildren: () => import('./views/decks/decks.module').then(m => m.DecksModule)
+      }
     ]
   },
   { path: '**', component: P404Component }

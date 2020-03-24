@@ -21,13 +21,11 @@ export class RegisterComponent {
     const password = form.value.email;
 
     this.authService.signup(email, password).subscribe(resData => {
-      console.log(resData);
       this.router.navigate(['/game']);
     }, errorMessage => {
       console.log(errorMessage);
       this.error = errorMessage;
     });
-
     form.reset();
   }
 }
