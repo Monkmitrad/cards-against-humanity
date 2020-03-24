@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
@@ -26,8 +26,20 @@ export class AuthService {
         email: email,
         password: password,
         returnSecureToken: true
-      }).pipe(catchError(errorResponse => {
-        let errorMessage = 'An unknown error occured';
+      }).pipe(catchError(this.handleError));
+  }
+
+  signin(email: string, password: string) {
+    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD6ifxAWbuOIIE3e6HIXNchSgpGd_k7yvs',
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }).pipe(catchError(this.handleError));
+  }
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occured';
         if (!errorResponse.error || !errorResponse.error.error) {
           return throwError(errorMessage);
         }
@@ -38,15 +50,5 @@ export class AuthService {
         }
 
         return throwError(errorMessage);
-      }));
-  }
-
-  signin(email: string, password: string) {
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD6ifxAWbuOIIE3e6HIXNchSgpGd_k7yvs',
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true
-      });
   }
 }
