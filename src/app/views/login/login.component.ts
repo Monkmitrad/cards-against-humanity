@@ -26,7 +26,7 @@ export class LoginComponent {
       console.log(errorMessage);
       this.error = errorMessage;
     });
-
+    console.log(form.value);
     form.reset();
   }
 }
