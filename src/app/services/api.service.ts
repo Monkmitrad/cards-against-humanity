@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { exhaustMap } from 'rxjs/operators';
+import { exhaustMap, map, tap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
 
@@ -11,6 +11,14 @@ export interface CardResponse {
     };
 }
 
+interface UserNameBody {
+  userID: string;
+  content: {
+    lastLogin: Date;
+    username: string;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +26,7 @@ export class ApiService {
 
   whiteUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/white-cards.json';
   blackUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/black-cards.json';
+  userUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/users/';
 
   constructor(private http: HttpClient) { }
 
@@ -48,5 +57,10 @@ export class ApiService {
       });
     }
     return of(cards);
+  }
+
+  setUsername(userId: string, username: string) {
+    const body = {username: username, lastLogin: new Date()};
+    return this.http.put(this.userUrl + userId + '.json', body).subscribe(data => console.log(data));
   }
 }

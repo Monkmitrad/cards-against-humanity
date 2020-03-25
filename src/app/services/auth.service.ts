@@ -5,6 +5,7 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
 import * as config from '../../environments/config.json';
 import { Router } from '@angular/router';
+import { ApiService } from './api.service';
 
 interface AuthResponseData {
   kind: string;
@@ -24,9 +25,9 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private apiService: ApiService) { }
 
-  signup(email: string, password: string) {
+  signup(email: string, password: string, username: string) {
     const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + config.google_api_key;
     console.log(url);
     return this.http.post<AuthResponseData>(url,
@@ -36,6 +37,7 @@ export class AuthService {
         returnSecureToken: true
       }).pipe(catchError(this.handleError), tap(responseData => {
         this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+        this.setUsername(username);
       }));
   }
 
@@ -113,5 +115,10 @@ export class AuthService {
     this.user.next(user);
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  public setUsername(username: string) {
+    const user = this.user.value;
+    this.apiService.setUsername(user.id, username);
   }
 }

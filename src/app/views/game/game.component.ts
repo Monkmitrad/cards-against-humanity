@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectService } from '../../services/select.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   templateUrl: 'game.component.html'
 })
 export class GameComponent implements OnInit {
 
-  constructor(private selectService: SelectService) { }
+  constructor(private selectService: SelectService, private authService: AuthService) { }
 
   ngOnInit() {
     this.selectService.clearCards();
@@ -19,5 +20,9 @@ export class GameComponent implements OnInit {
     } else {
       alert('Please select a card');
     }
+  }
+
+  setUsername() {
+    this.authService.setUsername('mongo1');
   }
 }
