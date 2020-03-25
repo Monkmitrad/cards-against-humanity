@@ -115,10 +115,15 @@ export class AuthService {
     this.user.next(user);
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
+    this.getUsername();
   }
 
-  public setUsername(username: string) {
+  private setUsername(username: string) {
     const user = this.user.value;
     this.apiService.setUsername(user.id, username);
+  }
+
+  private getUsername() {
+    this.apiService.getUsername(this.user.value.id);
   }
 }

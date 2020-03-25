@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { exhaustMap, map, tap } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { exhaustMap } from 'rxjs/operators';
+import { of, Observable, from } from 'rxjs';
 
 
 export interface CardResponse {
@@ -61,6 +61,11 @@ export class ApiService {
 
   setUsername(userId: string, username: string) {
     const body = {username: username, lastLogin: new Date()};
-    return this.http.put(this.userUrl + userId + '.json', body).subscribe(data => console.log(data));
+    this.http.put(this.userUrl + userId + '.json', body).subscribe(data => console.log(data));
+  }
+
+  getUsername(userId: string): Observable<string> {
+    return this.http.get(this.userUrl + userId + '.json').pipe(
+      exhaustMap((data: {lastLogin: Date, username: string}) => from(data.username)));
   }
 }

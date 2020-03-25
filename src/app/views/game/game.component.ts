@@ -21,8 +21,4 @@ export class GameComponent implements OnInit {
       alert('Please select a card');
     }
   }
-
-  setUsername() {
-    this.authService.setUsername('mongo1');
-  }
 }
