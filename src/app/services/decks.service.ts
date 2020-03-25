@@ -19,4 +19,9 @@ export class DecksService {
       this.apiService.saveBlackDeck(deckName, cardIds);
     }
   }
+
+  getWhiteDecks() {
+    // Resolve data conversion!!
+    this.apiService.getWhiteDecks().subscribe(data => console.log(data));
+  }
 }

@@ -27,8 +27,8 @@ export class ApiService {
   whiteUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/white-cards.json';
   blackUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/black-cards.json';
   userUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/users/';
-  whiteDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/white/';
-  blackDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/black/';
+  whiteDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/white';
+  blackDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/black';
 
   constructor(private http: HttpClient) { }
 
@@ -72,10 +72,20 @@ export class ApiService {
   }
 
   saveWhiteDeck(deckName: string, cardIds: string[]) {
-    this.http.put(this.whiteDeckUrl + deckName + '.json', JSON.stringify(cardIds));
+    this.http.put(this.whiteDeckUrl + '/' + deckName + '.json', JSON.stringify(cardIds));
   }
 
   saveBlackDeck(deckName: string, cardIds: string[]) {
-    this.http.put(this.blackDeckUrl + deckName + '.json', JSON.stringify(cardIds)).subscribe(data => console.log(data));
+    this.http.put(this.blackDeckUrl + '/' + deckName + '.json', JSON.stringify(cardIds));
+  }
+
+  getWhiteDecks() {
+    return this.http.get(this.whiteDeckUrl + '.json').pipe(
+      exhaustMap((data) => of(data))
+    );
+  }
+
+  getBlackDecks() {
+    this.http.get(this.blackDeckUrl + '.json').subscribe(data => console.log(data));
   }
 }

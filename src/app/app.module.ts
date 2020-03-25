@@ -45,7 +45,6 @@ import { SharedModule } from './shared/shared.module';
 @NgModule({
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
@@ -53,9 +52,10 @@ import { SharedModule } from './shared/shared.module';
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
-    BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     FormsModule,
+    BsDropdownModule.forRoot(),
+    BrowserAnimationsModule,
     SharedModule
   ],
   declarations: [
