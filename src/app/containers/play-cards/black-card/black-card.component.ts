@@ -8,5 +8,5 @@ import { ICard } from '../../../interfaces/icard';
   styleUrls: ['./black-card.component.css']
 })
 export class BlackCardComponent {
-  public card: ICard = { id: 1, content: 'Test Black Card'};
+  public card: ICard = { id: '1', content: 'Test Black Card'};
 }

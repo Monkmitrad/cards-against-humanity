@@ -7,11 +7,11 @@ import { Subject } from 'rxjs';
 export class SelectService {
 
   selectSubject: Subject<boolean> = new Subject();
-  selectedCardId: number;
+  selectedCardId: string;
 
   constructor() { }
 
-  selectWhiteCard(cardId: number) {
+  selectWhiteCard(cardId: string) {
     this.selectedCardId = cardId;
     console.log(this.selectedCardId);
     this.selectSubject.next();
@@ -21,7 +21,7 @@ export class SelectService {
     return this.selectSubject;
   }
 
-  getSelectedCardId(): number {
+  getSelectedCardId(): string {
     return this.selectedCardId;
   }
 }

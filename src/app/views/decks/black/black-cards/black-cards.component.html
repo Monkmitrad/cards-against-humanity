@@ -7,4 +7,9 @@
             <span>Here will be an instruction, how to do that!</span>
         </div><!--/card-body-->
     </div><!--/.card-->
+    <div class="card-deck">
+        <div class="col-sm5" *ngFor="let card of blackCards">
+            <app-white-card [card]="card"></app-white-card>
+        </div>
+    </div><!--/.card-deck-->
 </div>

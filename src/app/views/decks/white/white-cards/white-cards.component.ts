@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { ICard } from '../../../../interfaces/icard';
 
@@ -7,22 +7,25 @@ import { ICard } from '../../../../interfaces/icard';
   templateUrl: './white-cards.component.html',
   styleUrls: ['./white-cards.component.css']
 })
-export class WhiteCardsComponent implements OnInit {
+export class WhiteCardsComponent implements OnInit, AfterViewInit {
+
+  whiteCards: ICard[];
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
   }
 
+  ngAfterViewInit(): void {
+    this.getCards();
+  }
+
   addCard() {
-    this.apiService.addWhiteCard({id: 1, content: 'Test'});
+    this.apiService.addWhiteCard({id: '1', content: 'Test'});
+    this.getCards();
   }
 
   getCards() {
-    this.apiService.getWhiteCards().subscribe((data: ICard[]) => {
-      data.forEach((card: ICard) => {
-        console.log(card.content);
-      });
-    });
+    this.apiService.getWhiteCards().subscribe((cards: ICard[]) => this.whiteCards = cards);
   }
 }

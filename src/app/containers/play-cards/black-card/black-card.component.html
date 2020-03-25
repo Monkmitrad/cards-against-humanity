@@ -1,14 +1,18 @@
-<div class="card">
-    <div class="card-header">
-        <h5>Black Card</h5>
-        <span class="ml-auto">{{ card.id }}</span>
-    </div><!--/.card-header-->
+<div class="card border-secondary">
     <div class="card-body">
-        {{ card.content }}
+        <div class="card-title">
+            <h5>Black Card</h5>
+        </div><!--/.card-title-->
+        <div class="card-subtitle">
+            <span class="ml-auto">{{ card.id }}</span>
+        </div><!--/.card-subtitle-->
+        <div class="card-text">
+            {{ card.content }}
+        </div><!--/.card-text-->
     </div><!--/.card-body-->
     <div class="card-footer">
         <div class="row">
-            <img src="assets/img/brand/CAH_dark.png" width="158" height="34">
+            <img src="assets/img/brand/CAH_light.png" width="158" height="34">
         </div><!--/.row-->
     </div><!--/.card-footer-->
 </div><!--/.card-->

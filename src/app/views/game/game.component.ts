@@ -13,8 +13,8 @@ export class GameComponent implements OnInit {
   }
 
   submitCard() {
-    const cardId: number = this.selectService.getSelectedCardId();
-    if (cardId || cardId === 0) {
+    const cardId: string = this.selectService.getSelectedCardId();
+    if (cardId || cardId === '') {
       alert('Your selected card: ' + cardId);
     } else {
       alert('Please select a card');
