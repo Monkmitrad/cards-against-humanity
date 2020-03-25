@@ -52,7 +52,12 @@ export class SelectService {
     return this.selectSubject;
   }
 
-  getSelectedCardId(): string[] {
+  getSelectedWhiteCardsId(): string[] {
     return this.selectedWhiteCards;
+  }
+
+  clearCards() {
+    this.selectedWhiteCards = [];
+    this.selectedBlackCards = [];
   }
 }

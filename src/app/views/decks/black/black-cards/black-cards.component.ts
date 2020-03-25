@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ICard } from '../../../../interfaces/icard';
 import { ApiService } from '../../../../services/api.service';
+import { DecksService } from '../../../../services/decks.service';
+import { SelectService } from '../../../../services/select.service';
 
 @Component({
   selector: 'app-black-cards',
@@ -11,10 +13,11 @@ export class BlackCardsComponent implements OnInit {
 
   blackCards: ICard[];
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private decksService: DecksService, private selectService: SelectService) { }
 
   ngOnInit(): void {
     this.getCards();
+    // this.selectService.clearCards();
   }
 
   addCard() {

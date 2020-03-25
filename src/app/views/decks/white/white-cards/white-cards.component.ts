@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { ICard } from '../../../../interfaces/icard';
+import { DecksService } from '../../../../services/decks.service';
+import { SelectService } from '../../../../services/select.service';
 
 @Component({
   selector: 'app-white-cards',
@@ -11,10 +13,11 @@ export class WhiteCardsComponent implements OnInit {
 
   whiteCards: ICard[];
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private decksService: DecksService, private selectService: SelectService) { }
 
   ngOnInit(): void {
     this.getCards();
+    this.selectService.clearCards();
   }
 
   addCard() {
@@ -23,5 +26,9 @@ export class WhiteCardsComponent implements OnInit {
 
   getCards() {
     this.apiService.getWhiteCards().subscribe((cards: ICard[]) => this.whiteCards = cards);
+  }
+
+  savePreset() {
+
   }
 }
