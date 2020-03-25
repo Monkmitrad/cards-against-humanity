@@ -29,6 +29,6 @@ export class WhiteCardsComponent implements OnInit {
   }
 
   savePreset() {
-
+    this.decksService.saveWhiteDeck('Test Deck', this.selectService.getSelectedWhiteCardsId());
   }
 }

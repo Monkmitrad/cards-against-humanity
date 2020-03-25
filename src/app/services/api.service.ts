@@ -27,15 +27,17 @@ export class ApiService {
   whiteUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/white-cards.json';
   blackUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/black-cards.json';
   userUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/users/';
+  whiteDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/white/';
+  blackDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/black/';
 
   constructor(private http: HttpClient) { }
 
   addWhiteCard(card: ICard) {
-    this.http.post(this.whiteUrl, {content: card.content}).subscribe(data => console.log(data));
+    this.http.post(this.whiteUrl, {content: card.content});
   }
 
   addBlackCard(card: ICard) {
-    this.http.post(this.blackUrl, {content: card.content}).subscribe(data => console.log(data));
+    this.http.post(this.blackUrl, {content: card.content});
   }
 
   getWhiteCards() {
@@ -61,11 +63,15 @@ export class ApiService {
 
   setUsername(userId: string, username: string) {
     const body = {username: username, lastLogin: new Date()};
-    this.http.put(this.userUrl + userId + '.json', body).subscribe(data => console.log(data));
+    this.http.put(this.userUrl + userId + '.json', body);
   }
 
   getUsername(userId: string): Observable<string> {
     return this.http.get(this.userUrl + userId + '.json').pipe(
-      exhaustMap((data: {lastLogin: Date, username: string}) => from(data.username)));
+      exhaustMap((data: {lastLogin: Date, username: string}) => of(data.username)));
+  }
+
+  saveWhiteDeck(deckName: string, cardIds: string[]) {
+    this.http.put(this.whiteDeckUrl + deckName + '.json', JSON.stringify(cardIds)).subscribe(data => console.log(data));
   }
 }

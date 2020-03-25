@@ -124,6 +124,6 @@ export class AuthService {
   }
 
   private getUsername() {
-    this.apiService.getUsername(this.user.value.id);
+    this.apiService.getUsername(this.user.value.id).subscribe(data => console.log(data));
   }
 }
