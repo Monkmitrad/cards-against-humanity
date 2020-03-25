@@ -7,7 +7,7 @@
         </div>
         <div class="card-body">
           <div class="row">
-            <app-black-card></app-black-card>
+            <app-black-card class="mx-auto"></app-black-card>
           </div><!--/.row-->
         </div><!--/.card-body-->
       </div><!--/.card-->
@@ -79,7 +79,7 @@
                     </div>
                   </td>
                   <td>
-                    <div>Willma Ficken</div>
+                    <div>Heide Witzka</div>
                     <div class="small text-muted">
                       <span>New</span> | Registered: Jan 1, 2015
                     </div>
@@ -103,7 +103,10 @@
     <div class="col-sm-8 col-lg-8">
       <div class="card">
         <div class="card-header">
-          <h4>White Card Deck</h4>
+          <div class="row">
+            <h4>White Card Deck</h4>
+            <button (click)="submitCard()" class="ml-auto">Submit</button>
+          </div><!--/.row-->
         </div><!--/.card-header-->
         <div class="card-body">
           <div class="row">
@@ -116,5 +119,5 @@
         </div><!--/.card-body-->
       </div><!--/.card-->
     </div><!--/.col-->
-  </div>
+  </div><!--/.row-->
 </div>

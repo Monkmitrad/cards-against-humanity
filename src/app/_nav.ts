@@ -14,4 +14,14 @@ export const navItems: INavData[] = [
     url: '/login',
     icon: 'icon-login'
   },
+  {
+    name: 'Game',
+    url: '/game',
+    icon: 'icon-game-controller'
+  },
+  {
+    name: 'Decks',
+    url: '/decks',
+    icon: 'icon-drawer'
+  }
 ];

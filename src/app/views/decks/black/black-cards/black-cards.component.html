@@ -1,0 +1,15 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header text-center">
+            <h4>Here you can view all available black cards and create deck presets!</h4>
+        </div><!--/.card-header-->
+        <div class="card-body text-center">
+            <span>Here will be an instruction, how to do that!</span>
+        </div><!--/card-body-->
+    </div><!--/.card-->
+    <div class="card-deck">
+        <div class="col-sm5" *ngFor="let card of blackCards">
+            <app-white-card [card]="card"></app-white-card>
+        </div>
+    </div><!--/.card-deck-->
+</div>
