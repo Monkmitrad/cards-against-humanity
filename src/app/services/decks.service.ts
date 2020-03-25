@@ -13,4 +13,10 @@ export class DecksService {
       this.apiService.saveWhiteDeck(deckName, cardIds);
     }
   }
+
+  saveBlackDeck(deckName: string, cardIds: string[]) {
+    if (deckName && cardIds) {
+      this.apiService.saveBlackDeck(deckName, cardIds);
+    }
+  }
 }

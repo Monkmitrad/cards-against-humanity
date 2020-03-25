@@ -3,10 +3,16 @@
         <div class="card-header text-center">
             <h4>Here you can view all available black cards and create deck presets!</h4>
         </div><!--/.card-header-->
-        <div class="card-body text-center">
-            <span>Here will be an instruction on how to do that!</span>
-            <button (click)="addCard()">Add Card</button>
-        </div><!--/card-body-->
+        <div class="row justify-content-center">
+            <div class="card-text">
+                <span>Here will be an instruction on how to do that!</span>
+            </div><!--/.card-text-->
+        </div><!--/.row-->
+        <div class="row justify-content-center">
+            <button class="btn btn-primary" (click)="addCard()">Add Card</button>
+            <button class="btn btn-primary" (click)="getCards()">Get Cards</button>
+            <button class="btn btn-primary" (click)="savePreset()">Save Preset</button>
+        </div><!--/.row-->
     </div><!--/.card-->
     <div class="card-deck">
         <div class="col-sm5" *ngFor="let card of blackCards">

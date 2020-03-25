@@ -72,6 +72,10 @@ export class ApiService {
   }
 
   saveWhiteDeck(deckName: string, cardIds: string[]) {
-    this.http.put(this.whiteDeckUrl + deckName + '.json', JSON.stringify(cardIds)).subscribe(data => console.log(data));
+    this.http.put(this.whiteDeckUrl + deckName + '.json', JSON.stringify(cardIds));
+  }
+
+  saveBlackDeck(deckName: string, cardIds: string[]) {
+    this.http.put(this.blackDeckUrl + deckName + '.json', JSON.stringify(cardIds)).subscribe(data => console.log(data));
   }
 }

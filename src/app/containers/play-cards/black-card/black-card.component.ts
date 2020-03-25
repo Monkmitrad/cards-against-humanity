@@ -20,7 +20,7 @@ export class BlackCardComponent {
 
   selectCard() {
     if (this.parentName === 'blackCardsDeck') {
-      this.select = this.selectService.multiSelectWhiteCard(this.card.id);
+      this.select = this.selectService.multiSelectBlackCard(this.card.id);
     }
   }
 }

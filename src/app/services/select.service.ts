@@ -56,6 +56,11 @@ export class SelectService {
     return this.selectedWhiteCards;
   }
 
+  getSelectedBlackCardsId(): string[] {
+    console.log(this.selectedBlackCards);
+    return this.selectedBlackCards;
+  }
+
   clearCards() {
     this.selectedWhiteCards = [];
     this.selectedBlackCards = [];
