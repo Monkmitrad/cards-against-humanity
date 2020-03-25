@@ -11,6 +11,8 @@ import { ICard } from '../../../interfaces/icard';
 export class WhiteCardComponent {
   @Input()
   public card: ICard = {id: '0', content: 'Test White Card' };
+  @Input()
+  public parentName = '';
 
   public select = false;
 
@@ -21,7 +23,17 @@ export class WhiteCardComponent {
   }
 
   selectCard() {
-    this.selectService.selectWhiteCard(this.card.id);
-    this.select = true;
+
+    switch (this.parentName) {
+      case 'game':
+        this.selectService.selectWhiteCard(this.card.id);
+        this.select = true;
+        break;
+      case 'whiteCardsDeck':
+        this.select = this.selectService.multiSelectWhiteCard(this.card.id);
+        break;
+      default:
+        throw new Error('Unvalid parent');
+    }
   }
 }

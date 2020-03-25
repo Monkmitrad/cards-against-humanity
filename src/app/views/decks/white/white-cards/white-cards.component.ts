@@ -7,22 +7,18 @@ import { ICard } from '../../../../interfaces/icard';
   templateUrl: './white-cards.component.html',
   styleUrls: ['./white-cards.component.css']
 })
-export class WhiteCardsComponent implements OnInit, AfterViewInit {
+export class WhiteCardsComponent implements OnInit {
 
   whiteCards: ICard[];
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
     this.getCards();
   }
 
   addCard() {
-    this.apiService.addWhiteCard({id: '1', content: 'Test'});
-    this.getCards();
+    this.apiService.addWhiteCard({content: 'Test'});
   }
 
   getCards() {

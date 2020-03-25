@@ -7,22 +7,18 @@ import { ApiService } from '../../../../services/api.service';
   templateUrl: './black-cards.component.html',
   styleUrls: ['./black-cards.component.css']
 })
-export class BlackCardsComponent implements OnInit, AfterViewInit {
+export class BlackCardsComponent implements OnInit {
 
   blackCards: ICard[];
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
     this.getCards();
   }
 
   addCard() {
-    this.apiService.addBlackCard({id: '1', content: 'Test'});
-    this.getCards();
+    this.apiService.addBlackCard({content: 'Test'});
   }
 
   getCards() {
