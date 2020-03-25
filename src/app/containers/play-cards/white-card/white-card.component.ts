@@ -23,7 +23,6 @@ export class WhiteCardComponent {
   }
 
   selectCard() {
-
     switch (this.parentName) {
       case 'game':
         this.selectService.selectWhiteCard(this.card.id);

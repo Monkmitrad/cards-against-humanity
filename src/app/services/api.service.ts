@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { exhaustMap, take } from 'rxjs/operators';
+import { exhaustMap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
 
@@ -26,7 +26,7 @@ export class ApiService {
   }
 
   addBlackCard(card: ICard) {
-    this.http.put(this.blackUrl, {content: card.content}).subscribe(data => console.log(data));
+    this.http.post(this.blackUrl, {content: card.content}).subscribe(data => console.log(data));
   }
 
   getWhiteCards() {

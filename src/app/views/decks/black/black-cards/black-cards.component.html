@@ -5,20 +5,12 @@
         </div><!--/.card-header-->
         <div class="card-body text-center">
             <span>Here will be an instruction on how to do that!</span>
+            <button (click)="addCard()">Add Card</button>
         </div><!--/card-body-->
     </div><!--/.card-->
     <div class="card-deck">
         <div class="col-sm5" *ngFor="let card of blackCards">
-            <app-white-card [card]="card"></app-white-card>
+            <app-black-card [card]="card" [parentName]="'blackCardsDeck'"></app-black-card>
         </div>
     </div><!--/.card-deck-->
-    <ng-template #noCards>
-        <div class="card">
-            <div class="card-body">
-                <div class="card-title text-center">
-                    <h4>There are currently no black cards!</h4>
-                </div><!--/.card-title-->
-            </div><!--/.card-body-->
-        </div><!--/.card-->
-    </ng-template>
 </div>

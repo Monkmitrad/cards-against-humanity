@@ -7,27 +7,43 @@ import { Subject } from 'rxjs';
 export class SelectService {
 
   selectSubject: Subject<boolean> = new Subject();
-  selectedCardId: string[] = [];
+  selectedWhiteCards: string[] = [];
+  selectedBlackCards: string[] = [];
 
   constructor() { }
 
   selectWhiteCard(cardId: string) {
-    this.selectedCardId = [cardId];
-    console.log(this.selectedCardId);
+    this.selectedWhiteCards = [cardId];
+    console.log(this.selectedWhiteCards);
     this.selectSubject.next();
   }
 
-  multiSelectWhiteCard(id: string) {
-    // check if card already selected
-    if (this.selectedCardId.includes(id)) {
+  multiSelectWhiteCard(id: string): boolean {
+    // check if card selected
+    if (this.selectedWhiteCards.includes(id)) {
       // unselect card
-      this.selectedCardId.splice(this.selectedCardId.indexOf(id), 1);
-      console.log(this.selectedCardId);
+      this.selectedWhiteCards.splice(this.selectedWhiteCards.indexOf(id), 1);
+      console.log(this.selectedWhiteCards);
       return false;
     } else {
       // select card
-      this.selectedCardId.push(id);
-      console.log(this.selectedCardId);
+      this.selectedWhiteCards.push(id);
+      console.log(this.selectedWhiteCards);
+      return true;
+    }
+  }
+
+  multiSelectBlackCard(id: string): boolean {
+    // check if card selected
+    if (this.selectedBlackCards.includes(id)) {
+      // unselect card
+      this.selectedBlackCards.splice(this.selectedBlackCards.indexOf(id), 1);
+      console.log(this.selectedBlackCards);
+      return false;
+    } else {
+      // select card
+      this.selectedBlackCards.push(id);
+      console.log(this.selectedBlackCards);
       return true;
     }
   }
@@ -37,6 +53,6 @@ export class SelectService {
   }
 
   getSelectedCardId(): string[] {
-    return this.selectedCardId;
+    return this.selectedWhiteCards;
   }
 }
