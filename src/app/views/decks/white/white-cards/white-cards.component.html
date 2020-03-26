@@ -4,30 +4,21 @@
             <h4>Here you can view all available white cards and create deck presets!</h4>
         </div><!--/.card-header-->
         <div class="card-body">
-            <div class="row justify-content-center">
+            <div class="row">
                 <div class="card-text">
                     <span>Here will be an instruction on how to do that!</span>
                 </div><!--/.card-text-->
-            </div><!--/.row-->
-            <div class="row justify-content-center">
-                <button class="btn btn-primary" (click)="addCard()">Add Card</button>
-                <button class="btn btn-primary" (click)="getCards()">Get Cards</button>
-                <button class="btn btn-primary" (click)="savePreset()">Save Preset</button>
-                <button class="btn btn-primary" (click)="getDecks()">Get Decks</button>
-            </div><!--/.row-->
-            <div class="row">
-                <div class="btn-group" dropdown>
-                    <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
-                            aria-controls="dropdown-animated">
-                        Button dropdown <span class="caret"></span>
+                <div class="btn-group ml-auto" dropdown>
+                    <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-animated">
+                        Actions
+                        <span class="caret"></span>
                     </button>
-                    <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu"
+                    <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right"
                         role="menu" aria-labelledby="button-animated">
-                        <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-                        <li role="menuitem"><a class="dropdown-item" href="#">Another action</a>
-                        </li>
-                        <li role="menuitem"><a class="dropdown-item" href="#">Something else
-                        here</a></li>
+                        <li role="menuitem"><a class="dropdown-item text-center" (click)="addCard()">Add Card</a></li>
+                        <li role="menuitem"><a class="dropdown-item text-center" (click)="getCards()">Get Cards</a></li>
+                        <li role="menuitem"><a class="dropdown-item text-center" (click)="savePreset()">Save Deck</a></li>
+                        <li role="menuitem"><a class="dropdown-item text-center" (click)="getDecks()">Get Decks</a></li>
                     </ul>
                 </div>
             </div><!--/.row-->

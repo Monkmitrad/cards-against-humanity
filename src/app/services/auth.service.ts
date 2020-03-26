@@ -23,6 +23,7 @@ interface AuthResponseData {
 export class AuthService {
 
   user = new BehaviorSubject<User>(null);
+  username = new BehaviorSubject<string>('');
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router, private apiService: ApiService) { }
@@ -38,6 +39,8 @@ export class AuthService {
       }).pipe(catchError(this.handleError), tap(responseData => {
         this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
         this.setUsername(username);
+        this.username.next(username);
+        localStorage.setItem('username', username);
       }));
   }
 
@@ -50,6 +53,10 @@ export class AuthService {
         returnSecureToken: true
       }).pipe(catchError(this.handleError), tap(responseData => {
         this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+        this.apiService.getUsername(responseData.localId).subscribe(data => {
+          this.username.next(data);
+          localStorage.setItem('username', data);
+        });
       }));
   }
 
@@ -57,6 +64,7 @@ export class AuthService {
     this.user.next(null);
     this.router.navigate(['/login']);
     localStorage.removeItem('userData');
+    localStorage.removeItem('username');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -80,6 +88,13 @@ export class AuthService {
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(expirationDuration);
     }
+
+    const loadedUsername = localStorage.getItem('username');
+    if (loadedUsername) {
+      this.username.next(loadedUsername);
+    }
+
+    this.updateLogin();
   }
 
   autoLogout(expirationDuration: number) {
@@ -115,7 +130,7 @@ export class AuthService {
     this.user.next(user);
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
-    this.getUsername();
+    this.updateLogin();
   }
 
   private setUsername(username: string) {
@@ -123,7 +138,7 @@ export class AuthService {
     this.apiService.setUsername(user.id, username);
   }
 
-  private getUsername() {
-    this.apiService.getUsername(this.user.value.id).subscribe(data => console.log(data));
+  updateLogin() {
+    this.apiService.updateLogin(new Date(), this.user.value.id);
   }
 }

@@ -7,6 +7,7 @@ import { GameComponent } from './game.component';
 import { GameRoutingModule } from './game-routing.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
+import { PlayerTableComponent } from '../../containers/player-table/player-table.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule
   ],
   declarations: [
-    GameComponent
+    GameComponent,
+    PlayerTableComponent
   ]
 })
 export class GameModule { }

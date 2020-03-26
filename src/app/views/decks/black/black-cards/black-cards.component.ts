@@ -31,4 +31,8 @@ export class BlackCardsComponent implements OnInit {
   savePreset() {
     this.decksService.saveBlackDeck('Test Deck', this.selectService.getSelectedBlackCardsId());
   }
+
+  getDecks() {
+    
+  }
 }

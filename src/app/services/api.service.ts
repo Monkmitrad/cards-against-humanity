@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { exhaustMap } from 'rxjs/operators';
+import { exhaustMap, map } from 'rxjs/operators';
 import { of, Observable, from } from 'rxjs';
+import { IDeck } from '../interfaces/ideck';
+import { User } from '../models/user';
 
 
 export interface CardResponse {
     id: {
       content: string;
     };
-}
-
-interface UserNameBody {
-  userID: string;
-  content: {
-    lastLogin: Date;
-    username: string;
-  };
 }
 
 @Injectable({
@@ -32,6 +26,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
+  // Methods for white-cards and black-cards
+
   addWhiteCard(card: ICard) {
     this.http.post(this.whiteUrl, {content: card.content});
   }
@@ -42,15 +38,15 @@ export class ApiService {
 
   getWhiteCards() {
     return this.http.get(this.whiteUrl).pipe(
-      exhaustMap(response => this.transformResponse(response)));
+      exhaustMap(response => this.transformCardResponse(response)));
   }
 
   getBlackCards() {
     return this.http.get(this.blackUrl).pipe(
-      exhaustMap(response => this.transformResponse(response)));
+      exhaustMap(response => this.transformCardResponse(response)));
   }
 
-  transformResponse(response: any): Observable<ICard[]> {
+  transformCardResponse(response: any): Observable<ICard[]> {
     const cards: ICard[] = [];
     if (response) {
       Object.keys(response).forEach(element => {
@@ -61,15 +57,7 @@ export class ApiService {
     return of(cards);
   }
 
-  setUsername(userId: string, username: string) {
-    const body = {username: username, lastLogin: new Date()};
-    this.http.put(this.userUrl + userId + '.json', body);
-  }
-
-  getUsername(userId: string): Observable<string> {
-    return this.http.get(this.userUrl + userId + '.json').pipe(
-      exhaustMap((data: {lastLogin: Date, username: string}) => of(data.username)));
-  }
+  // Methods for DecksService
 
   saveWhiteDeck(deckName: string, cardIds: string[]) {
     this.http.put(this.whiteDeckUrl + '/' + deckName + '.json', JSON.stringify(cardIds));
@@ -81,11 +69,47 @@ export class ApiService {
 
   getWhiteDecks() {
     return this.http.get(this.whiteDeckUrl + '.json').pipe(
-      exhaustMap((data) => of(data))
+      exhaustMap((data) => this.transformDeckResponse(data))
     );
   }
 
   getBlackDecks() {
-    this.http.get(this.blackDeckUrl + '.json').subscribe(data => console.log(data));
+    return this.http.get(this.blackDeckUrl + '.json').pipe(
+      exhaustMap(data => this.transformDeckResponse(data)));
+  }
+
+  transformDeckResponse(response: any): Observable<IDeck[]> {
+    const decks: IDeck[] = [];
+    if (response) {
+      Object.keys(response).forEach(element => {
+        decks.push({deckName: element, cards: response[element]});
+        return decks;
+      });
+    }
+    return of(decks);
+  }
+
+  // Methods for AuthService
+
+  setUsername(userId: string, username: string): void {
+    const body = {username: username, lastLogin: new Date()};
+    this.http.put(this.userUrl + '/' + userId + '.json', body);
+  }
+
+  getUsername(userId: string): Observable<string> {
+    return this.http.get(this.userUrl + '/' + userId + '.json').pipe(
+      exhaustMap((data: {lastLogin: Date, username: string}) => of(data.username)));
+  }
+
+  updateLogin(date: Date, userId: string) {
+    // this.http.patch(this.userUrl + '/' + userId + '.json', { lastLogin: date }).subscribe();
+  }
+
+  // Methods for PlayerTable
+
+  getAllUsers() {
+    this.http.get(this.userUrl + '.json').subscribe(data => {
+      console.log(data);
+    });
   }
 }

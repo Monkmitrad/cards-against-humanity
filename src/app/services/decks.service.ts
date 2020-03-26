@@ -21,7 +21,10 @@ export class DecksService {
   }
 
   getWhiteDecks() {
-    // Resolve data conversion!!
     this.apiService.getWhiteDecks().subscribe(data => console.log(data));
+  }
+
+  getBlackDecks() {
+    this.apiService.getBlackDecks().subscribe(data => console.log(data));
   }
 }

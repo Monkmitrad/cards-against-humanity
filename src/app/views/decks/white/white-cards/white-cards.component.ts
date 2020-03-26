@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { ICard } from '../../../../interfaces/icard';
 import { DecksService } from '../../../../services/decks.service';
