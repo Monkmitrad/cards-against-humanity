@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { navItems } from '../../_nav';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
@@ -11,8 +11,10 @@ import { User } from '../../models/user';
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
   public sidebarMinimized = false;
   public navItems = navItems;
-  isAuthenticated = false;
+  public isAuthenticated = false;
+  public username = '';
   private userSub: Subscription;
+  private usernameSub: Subscription;
 
   constructor(private authService: AuthService) { }
 
@@ -20,10 +22,14 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     this.userSub = this.authService.user.subscribe((user: User) => {
       this.isAuthenticated = !!user; // check if user is not existent
     });
+    this.usernameSub = this.authService.username.subscribe((username: string) => {
+      this.username = username;
+    });
   }
 
   ngOnDestroy() {
     this.userSub.unsubscribe();
+    this.usernameSub.unsubscribe();
   }
 
   toggleMinimize(e) {

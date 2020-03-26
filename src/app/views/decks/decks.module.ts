@@ -7,6 +7,7 @@ import { WhiteCardsComponent } from './white/white-cards/white-cards.component';
 import { BlackCardsComponent } from './black/black-cards/black-cards.component';
 import { SharedModule } from '../../shared/shared.module';
 import { httpInterceptorProviders } from '../../shared';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { httpInterceptorProviders } from '../../shared';
         DecksRoutingModule,
         CommonModule,
         SharedModule,
+        BsDropdownModule.forRoot()
     ],
     declarations: [
         DecksComponent,

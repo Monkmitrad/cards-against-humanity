@@ -39,14 +39,12 @@ import { AppRoutingModule } from './app.routing';
 // Import 3rd party components
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { ChartsModule } from 'ng2-charts';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
@@ -54,10 +52,10 @@ import { SharedModule } from './shared/shared.module';
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
-    BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule,
     FormsModule,
+    BsDropdownModule.forRoot(),
+    BrowserAnimationsModule,
     SharedModule
   ],
   declarations: [

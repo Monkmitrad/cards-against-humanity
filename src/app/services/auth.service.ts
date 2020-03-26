@@ -5,6 +5,7 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
 import * as config from '../../environments/config.json';
 import { Router } from '@angular/router';
+import { ApiService } from './api.service';
 
 interface AuthResponseData {
   kind: string;
@@ -22,11 +23,12 @@ interface AuthResponseData {
 export class AuthService {
 
   user = new BehaviorSubject<User>(null);
+  username = new BehaviorSubject<string>('');
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private apiService: ApiService) { }
 
-  signup(email: string, password: string) {
+  signup(email: string, password: string, username: string) {
     const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + config.google_api_key;
     console.log(url);
     return this.http.post<AuthResponseData>(url,
@@ -36,6 +38,9 @@ export class AuthService {
         returnSecureToken: true
       }).pipe(catchError(this.handleError), tap(responseData => {
         this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+        this.setUsername(username);
+        this.username.next(username);
+        localStorage.setItem('username', username);
       }));
   }
 
@@ -48,6 +53,10 @@ export class AuthService {
         returnSecureToken: true
       }).pipe(catchError(this.handleError), tap(responseData => {
         this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+        this.apiService.getUsername(responseData.localId).subscribe(data => {
+          this.username.next(data);
+          localStorage.setItem('username', data);
+        });
       }));
   }
 
@@ -55,6 +64,7 @@ export class AuthService {
     this.user.next(null);
     this.router.navigate(['/login']);
     localStorage.removeItem('userData');
+    localStorage.removeItem('username');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -78,6 +88,13 @@ export class AuthService {
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(expirationDuration);
     }
+
+    const loadedUsername = localStorage.getItem('username');
+    if (loadedUsername) {
+      this.username.next(loadedUsername);
+    }
+
+    this.updateLogin();
   }
 
   autoLogout(expirationDuration: number) {
@@ -113,5 +130,15 @@ export class AuthService {
     this.user.next(user);
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
+    this.updateLogin();
+  }
+
+  private setUsername(username: string) {
+    const user = this.user.value;
+    this.apiService.setUsername(user.id, username);
+  }
+
+  updateLogin() {
+    this.apiService.updateLogin(new Date(), this.user.value.id);
   }
 }

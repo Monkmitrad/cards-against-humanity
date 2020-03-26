@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { environment } from '../../environments/environment';
-
 import { HttpRequestInterceptor } from './http-request.interceptor';
 import { WhiteCardComponent } from '../containers/play-cards/white-card';
 import { BlackCardComponent } from '../containers/play-cards/black-card';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -22,7 +21,7 @@ import { BlackCardComponent } from '../containers/play-cards/black-card';
   exports: [
     WhiteCardComponent,
     BlackCardComponent,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }

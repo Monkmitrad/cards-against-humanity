@@ -2,3 +2,8 @@
     background: black;
     color: white;
 }
+
+.selected {
+    background: blue;
+    color: white;
+}

@@ -1,16 +1,13 @@
-<div class="card border-secondary">
-    <div class="card-body">
-        <div class="card-title">
+<div class="card border-secondary" (click)="selectCard()" [title]="card.id">
+    <div class="card-body" [ngClass]="select ? 'selected' : ''">
+        <div class="card-title" [ngClass]="select ? 'selected' : ''">
             <h5>Black Card</h5>
         </div><!--/.card-title-->
-        <div class="card-subtitle">
-            <span class="ml-auto">{{ card.id }}</span>
-        </div><!--/.card-subtitle-->
         <div class="card-text">
             {{ card.content }}
         </div><!--/.card-text-->
     </div><!--/.card-body-->
-    <div class="card-footer">
+    <div class="card-footer" [ngClass]="select ? 'selected' : ''">
         <div class="row">
             <img src="assets/img/brand/CAH_light.png" width="158" height="34">
         </div><!--/.row-->
