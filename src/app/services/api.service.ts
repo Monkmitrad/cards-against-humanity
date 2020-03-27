@@ -108,8 +108,17 @@ export class ApiService {
   // Methods for PlayerTable
 
   getAllUsers() {
-    this.http.get(this.userUrl + '.json').subscribe(data => {
-      console.log(data);
-    });
+    const users: {lastLogin: Date, username: string}[] = [];
+    return this.http.get(this.userUrl + '.json').pipe(
+      exhaustMap((data: any) => {
+        if (data) {
+          Object.keys(data).forEach(element => {
+            users.push({lastLogin: data[element].lastLogin, username: data[element].username});
+            return users;
+          });
+          return of(users);
+        }
+      })
+    );
   }
 }

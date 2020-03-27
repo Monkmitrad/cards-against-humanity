@@ -14,67 +14,23 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr *ngFor="let user of users">
               <td class="text-center">
-                <div class="avatar">
-                  <img src="assets/img/avatars/avatar.png" class="img-avatar">
-                  <span class="avatar-status badge-success"></span>
-                </div>
+                <img src="assets/img/avatars/avatar.png" class="img-avatar">
+                <span class="avatar-status badge-success"></span>
               </td>
               <td>
-                <div>Rainer Zufall</div>
+                <div [ngClass]="{'text-danger': user.username === ownUsername}">{{ user.username }}</div>
                 <div class="small text-muted">
                   <span>New</span> | Registered: Jan 1, 2015
                 </div>
               </td>
               <td>
                 <div class="small text-muted">Last login</div>
-                <strong>5 minutes ago</strong>
+                <strong>{{ user.lastLogin | date: 'dd.MM.yyyy HH:mm' }}</strong>
               </td>
               <td>
                 <strong>50</strong>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center">
-                <div class="avatar">
-                  <img src="assets/img/avatars/avatar.png" class="img-avatar">
-                  <span class="avatar-status badge-success"></span>
-                </div>
-              </td>
-              <td>
-                <div>Franz Ohse</div>
-                <div class="small text-muted">
-                  <span>New</span> | Registered: Jan 1, 2015
-                </div>
-              </td>
-              <td>
-                <div class="small text-muted">Last login</div>
-                <strong>15 minutes ago</strong>
-              </td>
-              <td>
-                <strong>25</strong>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center">
-                <div class="avatar">
-                  <img src="assets/img/avatars/avatar.png" class="img-avatar">
-                  <span class="avatar-status badge-success"></span>
-                </div>
-              </td>
-              <td>
-                <div>Heide Witzka</div>
-                <div class="small text-muted">
-                  <span>New</span> | Registered: Jan 1, 2015
-                </div>
-              </td>
-              <td>
-                <div class="small text-muted">Last login</div>
-                <strong>19 minutes ago</strong>
-              </td>
-              <td>
-                <strong>130</strong>
               </td>
             </tr>
           </tbody>

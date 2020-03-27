@@ -9,7 +9,10 @@
   >
   <ul class="nav navbar-nav ml-auto">
     <li class="nav-item px-3" *ngIf="isAuthenticated">
-      <span class="">Current User: {{ username }}</span>
+      <div>
+        <span>Current User: </span>
+        <span class="text-danger"> {{ username }} </span>
+      </div>
     </li>
     <li class="nav-item px-3" *ngIf="isAuthenticated">
       <a class="nav-link" (click)="onLogout()">Logout</a>

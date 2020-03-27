@@ -1,16 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-player-table',
   templateUrl: './player-table.component.html',
   styleUrls: ['./player-table.component.css']
 })
-export class PlayerTableComponent implements OnInit {
+export class PlayerTableComponent implements OnInit, OnDestroy {
 
-  constructor(private apiService: ApiService) { }
+  users: {lastLogin: Date, username: string}[] = [];
+  ownUsername = '';
+
+  userSub: Subscription;
+  usernameSub: Subscription;
+
+  constructor(private apiService: ApiService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.apiService.getAllUsers();
+    this.userSub = this.apiService.getAllUsers().subscribe(data => this.users = data);
+    this.usernameSub = this.authService.username.subscribe(data => this.ownUsername = data);
+  }
+
+  ngOnDestroy(): void {
+    this.userSub.unsubscribe();
+    this.usernameSub.unsubscribe();
   }
 }
