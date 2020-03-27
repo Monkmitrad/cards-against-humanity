@@ -138,6 +138,56 @@ app.get('/api/card/black/:id', (req, res) => {
     }
 });
 
+
+// update specific user by ID
+app.patch('/api/user/:id', async (req, res) => {
+    const _id = req.params.id;
+
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['lastLogin', 'username', 'password'];
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send( { errorMessage: 'Invalid updates!' });
+    }
+
+    if (_id.match(/^[0-9a-fA-F]{24}$/)) {
+        try {
+            const user = await User.findById(_id);
+
+            updates.forEach((update) => user[update] = req.body[update]);
+            await user.save();
+
+            // const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true } );
+
+            if (!user) {
+                return res.status(404).send();
+            }
+
+            res.send(user);
+        } catch (error) {
+            res.status(400).send(error);
+        }
+        
+    } else {
+        res.status(400).send({
+            "errorMessage":"Please provide valid 24-character hex-string"
+        });
+    }
+});
+
+// ---- SERVE AUTH REQUESTS ---- //
+app.post('/api/login', async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password);
+        res.send(user);
+    } catch (error) {
+        res.status(400).send({
+            errorMessage: 'Login failed!'
+        });
+    }
+});
+
 // default api response
 app.get('/api/*', (req, res) => {
     res.send({

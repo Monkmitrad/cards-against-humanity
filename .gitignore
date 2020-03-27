@@ -46,3 +46,4 @@ Thumbs.db
 
 # own config file
 /angular/src/environments/config.json
+*.ps1
