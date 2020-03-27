@@ -1,0 +1,27 @@
+{
+  "name": "cah-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Monkmitrad/cards-against-humanity.git"
+  },
+  "author": "Björn Biester",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Monkmitrad/cards-against-humanity/issues"
+  },
+  "homepage": "https://github.com/Monkmitrad/cards-against-humanity#readme",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.9.6"
+  }
+}

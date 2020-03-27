@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { ApiService } from './services/api.service';
 
 @Component({
   // tslint:disable-next-line
@@ -8,7 +9,7 @@ import { AuthService } from './services/auth.service';
   template: '<router-outlet></router-outlet>'
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private apiService: ApiService) { }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {
@@ -18,5 +19,7 @@ export class AppComponent implements OnInit {
       window.scrollTo(0, 0);
     });
     this.authService.autoLogin();
+
+    this.apiService.Test();
   }
 }

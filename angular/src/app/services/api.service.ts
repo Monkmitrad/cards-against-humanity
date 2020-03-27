@@ -121,4 +121,10 @@ export class ApiService {
       })
     );
   }
+
+  // Test methods
+
+  Test() {
+    this.http.get('/api/test').subscribe(data => console.log(data));
+  }
 }
