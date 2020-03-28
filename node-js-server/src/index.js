@@ -5,29 +5,26 @@ const chalk = require('chalk');
 
 require('./db/mongoose');
 
-const User = require('./models/user');
+const userRouter = require('./routers/user');
+
 const WhiteCard = require('./models/whiteCard');
 const BlackCard = require('./models/blackCard');
 
 const _port = 4100;
 const _app_folder = '../angular/dist/';
-
 const app = express();
+
+app.use((req, res, next) => {
+    
+    next();
+});
+
 app.use(express.json());
 app.use(compression());
 
+app.use(userRouter);
+
 // ---- SERVE POST API REQUEST ---- //
-
-// add new user
-app.post('/api/user', (req, res) => {
-    const user = new User(req.body);
-    user.save().then(() => {
-        res.status(201).send(user);
-    }).catch((error) => {
-        res.status(400).send(error);
-    })
-});
-
 
 // add new white card
 app.post('/api/card/white', (req, res) => {
@@ -50,35 +47,6 @@ app.post('/api/card/black', (req, res) => {
 })
 
 // ---- SERVE GET API REQUEST ---- //
-
-// get all users
-app.get('/api/user', (req, res) => {
-    User.find({}).then((users) => {
-        res.send(users);
-    }).catch((error) => {
-        res.status(500).send();
-    });
-});
-
-// get specific user by ID
-app.get('/api/user/:id', (req, res) => {
-    const _id = req.params.id;
-    if (_id.match(/^[0-9a-fA-F]{24}$/)) {
-        // Yes, it's a valid ObjectId, proceed with `findById` call.
-        User.findById(_id).then((user) => {
-            if (!user) {
-                return res.status(404).send();
-            }
-            return res.send(user);
-        }).catch((error) => {
-            return res.status(500).send(error);
-        });
-    } else {
-        res.status(400).send({
-            "errorMessage":"Please provide valid 24-character hex-string"
-        });
-    }
-});
 
 // get all white cards
 app.get('/api/card/white', (req, res) => {
@@ -134,56 +102,6 @@ app.get('/api/card/black/:id', (req, res) => {
     } else {
         res.status(400).send({
             "errorMessage":"Please provide valid 24-character hex-string"
-        });
-    }
-});
-
-
-// update specific user by ID
-app.patch('/api/user/:id', async (req, res) => {
-    const _id = req.params.id;
-
-    const updates = Object.keys(req.body);
-    const allowedUpdates = ['lastLogin', 'username', 'password'];
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-    if (!isValidOperation) {
-        return res.status(400).send( { errorMessage: 'Invalid updates!' });
-    }
-
-    if (_id.match(/^[0-9a-fA-F]{24}$/)) {
-        try {
-            const user = await User.findById(_id);
-
-            updates.forEach((update) => user[update] = req.body[update]);
-            await user.save();
-
-            // const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true } );
-
-            if (!user) {
-                return res.status(404).send();
-            }
-
-            res.send(user);
-        } catch (error) {
-            res.status(400).send(error);
-        }
-        
-    } else {
-        res.status(400).send({
-            "errorMessage":"Please provide valid 24-character hex-string"
-        });
-    }
-});
-
-// ---- SERVE AUTH REQUESTS ---- //
-app.post('/api/login', async (req, res) => {
-    try {
-        const user = await User.findByCredentials(req.body.email, req.body.password);
-        res.send(user);
-    } catch (error) {
-        res.status(400).send({
-            errorMessage: 'Login failed!'
         });
     }
 });
