@@ -70,33 +70,23 @@ export class ApiService {
   // Methods for DecksService
 
   saveWhiteDeck(deckName: string, cardIds: string[]) {
-    this.http.put(this.whiteDeckUrl + '/' + deckName + '.json', JSON.stringify(cardIds));
+    this.http.post(this.apiWhiteDeckUrl, {deckName, cardIds});
   }
 
   saveBlackDeck(deckName: string, cardIds: string[]) {
-    this.http.put(this.blackDeckUrl + '/' + deckName + '.json', JSON.stringify(cardIds));
+    this.http.post(this.apiBlackDeckUrl, {deckName, cardIds});
   }
 
   getWhiteDecks() {
-    return this.http.get(this.whiteDeckUrl + '.json').pipe(
-      exhaustMap((data) => this.transformDeckResponse(data))
+    return this.http.get(this.apiWhiteDeckUrl).pipe(
+      catchError(this.handleError), tap((data: IDeck[]) => data)
     );
   }
 
   getBlackDecks() {
-    return this.http.get(this.blackDeckUrl + '.json').pipe(
-      exhaustMap(data => this.transformDeckResponse(data)));
-  }
-
-  transformDeckResponse(response: any): Observable<IDeck[]> {
-    const decks: IDeck[] = [];
-    if (response) {
-      Object.keys(response).forEach(element => {
-        decks.push({deckName: element, cards: response[element]});
-        return decks;
-      });
-    }
-    return of(decks);
+    return this.http.get(this.apiBlackDeckUrl).pipe(
+      catchError(this.handleError), tap((data: IDeck[]) => data)
+    );
   }
 
   // Methods for AuthService
