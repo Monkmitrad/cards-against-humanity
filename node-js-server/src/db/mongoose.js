@@ -7,7 +7,8 @@ const _connectionURL = 'mongodb://127.0.0.1:' + _port + '/cah-db-api';
 mongoose.connect(_connectionURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 }).then(() => {
     console.log(chalk.blue('MongoDB connection established'));
 }).catch((error) => {

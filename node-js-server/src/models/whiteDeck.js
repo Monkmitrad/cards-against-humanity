@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Deck = mongoose.model('Deck', {
+const WhiteDeck = mongoose.model('WhiteDeck', {
     deckName: {
         type: String,
         required: true,
@@ -12,4 +12,4 @@ const Deck = mongoose.model('Deck', {
     }
 })
 
-module.exports = Deck;
+module.exports = WhiteDeck;

@@ -16,12 +16,12 @@ export class BlackCardsComponent implements OnInit {
   constructor(private apiService: ApiService, private decksService: DecksService, private selectService: SelectService) { }
 
   ngOnInit(): void {
+    this.selectService.clearCards();
     this.getCards();
-    // this.selectService.clearCards();
   }
 
   addCard() {
-    this.apiService.addBlackCard({content: 'Test'});
+    this.apiService.addBlackCard('Test');
   }
 
   getCards() {
@@ -33,6 +33,6 @@ export class BlackCardsComponent implements OnInit {
   }
 
   getDecks() {
-    
+    this.decksService.getBlackDecks();
   }
 }

@@ -5,12 +5,6 @@ import { exhaustMap, catchError, tap } from 'rxjs/operators';
 import { of, Observable, throwError } from 'rxjs';
 import { IDeck } from '../interfaces/ideck';
 
-export interface CardResponse {
-    id: {
-      content: string;
-    };
-}
-
 export interface AuthResponseData {
   user: {
     _id: string;
@@ -49,33 +43,28 @@ export class ApiService {
 
   // Methods for white-cards and black-cards
 
-  addWhiteCard(card: ICard) {
-    this.http.post(this.apiWhiteUrl, {content: card.content});
+  addWhiteCard(content: string) {
+    this.http.post(this.apiWhiteUrl, content).pipe(
+      catchError(this.handleError), tap(response => response)
+    );
   }
 
-  addBlackCard(card: ICard) {
-    this.http.post(this.apiBlackUrl, {content: card.content});
+  addBlackCard(content: string) {
+    return this.http.post(this.apiBlackUrl, content).pipe(
+      catchError(this.handleError), tap(response => response)
+    );
   }
 
   getWhiteCards() {
     return this.http.get(this.apiWhiteUrl).pipe(
-      exhaustMap(response => this.transformCardResponse(response)));
+      catchError(this.handleError), tap((data: ICard[]) => data)
+    );
   }
 
   getBlackCards() {
     return this.http.get(this.apiBlackUrl).pipe(
-      exhaustMap(response => this.transformCardResponse(response)));
-  }
-
-  transformCardResponse(response: any): Observable<ICard[]> {
-    const cards: ICard[] = [];
-    if (response) {
-      Object.keys(response).forEach(element => {
-        cards.push({id: element, content: response[element].content});
-        return cards;
-      });
-    }
-    return of(cards);
+      catchError(this.handleError), tap((data: ICard[]) => data)
+    );
   }
 
   // Methods for DecksService
@@ -140,7 +129,7 @@ export class ApiService {
 
   getAllUsers() {
     return this.http.get(this.apiUserUrl).pipe(
-      catchError(this.handleError), tap((responseData) => responseData, (error) => console.log(error))
+      catchError(this.handleError), tap((responseData) => responseData)
     );
   }
 

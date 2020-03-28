@@ -16,12 +16,12 @@ export class WhiteCardsComponent implements OnInit {
   constructor(private apiService: ApiService, private decksService: DecksService, private selectService: SelectService) { }
 
   ngOnInit(): void {
-    this.getCards();
     this.selectService.clearCards();
+    this.getCards();
   }
 
   addCard() {
-    this.apiService.addWhiteCard({content: 'Test'});
+    this.apiService.addWhiteCard('Test');
   }
 
   getCards() {

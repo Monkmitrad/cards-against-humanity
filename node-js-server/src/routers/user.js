@@ -58,7 +58,7 @@ router.post('/api/logoutAll', auth, async (req, res) => {
 // get all usernames
 router.get('/api/user', auth, async (req, res) => {
     try {
-        const users = await User.find({ });
+        const users = await User.find({});
         const sanitizedUsers = [];
         users.forEach((user) => {
             sanitizedUsers.push(user.getUsername());
@@ -81,16 +81,16 @@ router.patch('/api/user/me', auth, async (req, res) => {
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
-        return res.status(400).send( { errorMessage: 'Invalid updates!' });
+        return res.status(400).send({ errorMessage: 'Invalid updates!' });
     }
 
     try {
-            updates.forEach((update) => req.user[update] = req.body[update]);
-            await req.user.save();
+        updates.forEach((update) => req.user[update] = req.body[update]);
+        await req.user.save();
 
-            // const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true } );
+        // const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true } );
 
-            res.send(req.user);
+        res.send(req.user);
     } catch (error) {
         res.status(400).send(error);
     }

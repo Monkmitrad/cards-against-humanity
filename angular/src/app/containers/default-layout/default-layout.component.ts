@@ -25,11 +25,11 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     this.usernameSub = this.authService.user.subscribe((user: User) => {
       this.username = user.username;
     });
+    this.usernameSub.unsubscribe();
   }
 
   ngOnDestroy() {
     this.userSub.unsubscribe();
-    this.usernameSub.unsubscribe();
   }
 
   toggleMinimize(e) {
@@ -38,5 +38,6 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
+    this.userSub.unsubscribe();
   }
 }

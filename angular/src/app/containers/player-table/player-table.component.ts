@@ -21,10 +21,10 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userSub = this.apiService.getAllUsers().subscribe((data: {username: string, lastLogin: Date}[]) => this.users = data);
     this.usernameSub = this.authService.user.subscribe(user => {this.ownUsername = user.username; });
+    this.usernameSub.unsubscribe();
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
-    this.usernameSub.unsubscribe();
   }
 }

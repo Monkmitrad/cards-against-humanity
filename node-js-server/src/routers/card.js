@@ -12,7 +12,7 @@ router.post('/api/card/white', auth, (req, res) => {
     }).catch((error) => {
         res.status(400).send(error);
     })
-})
+});
 
 // add new black card
 router.post('/api/card/black', auth, (req, res) => {
@@ -22,7 +22,7 @@ router.post('/api/card/black', auth, (req, res) => {
     }).catch((error) => {
         res.status(400).send(error);
     })
-})
+});
 
 // get all white cards
 router.get('/api/card/white', auth, (req, res) => {
@@ -57,7 +57,7 @@ router.get('/api/card/white/:id', (req, res) => {
         });
     } else {
         res.status(400).send({
-            "errorMessage":"Please provide valid 24-character hex-string"
+            "errorMessage": "Please provide valid 24-character hex-string"
         });
     }
 });
@@ -77,7 +77,7 @@ router.get('/api/card/black/:id', (req, res) => {
         });
     } else {
         res.status(400).send({
-            "errorMessage":"Please provide valid 24-character hex-string"
+            "errorMessage": "Please provide valid 24-character hex-string"
         });
     }
 });

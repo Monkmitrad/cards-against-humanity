@@ -7,6 +7,7 @@ require('./db/mongoose');
 
 const userRouter = require('./routers/user');
 const cardRouter = require('./routers/card');
+const deckRouter = require('./routers/deck');
 
 const _port = 4100;
 const _app_folder = '../../angular/dist/';
@@ -22,6 +23,7 @@ app.use(compression());
 
 app.use(userRouter);
 app.use(cardRouter);
+app.use(deckRouter);
 
 // default api response
 app.get('/api/*', (req, res) => {
