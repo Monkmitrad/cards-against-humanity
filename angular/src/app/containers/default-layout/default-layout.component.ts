@@ -22,8 +22,8 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     this.userSub = this.authService.user.subscribe((user: User) => {
       this.isAuthenticated = !!user; // check if user is not existent
     });
-    this.usernameSub = this.authService.username.subscribe((username: string) => {
-      this.username = username;
+    this.usernameSub = this.authService.user.subscribe((user: User) => {
+      this.username = user.username;
     });
   }
 

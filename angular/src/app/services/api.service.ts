@@ -140,7 +140,7 @@ export class ApiService {
 
   getAllUsers() {
     return this.http.get(this.apiUserUrl).pipe(
-      catchError(this.handleError), tap((responseData) => responseData)
+      catchError(this.handleError), tap((responseData) => responseData, (error) => console.log(error))
     );
   }
 

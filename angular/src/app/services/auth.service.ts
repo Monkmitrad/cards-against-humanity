@@ -12,7 +12,6 @@ import { ApiService, AuthResponseData } from './api.service';
 export class AuthService {
 
   user = new BehaviorSubject<User>(null);
-  username = new BehaviorSubject<string>('');
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router, private apiService: ApiService) { }
@@ -60,37 +59,25 @@ export class AuthService {
   }
 
   autoLogin() {
-    const userData: User = JSON.parse(localStorage.getItem('userData'));
+    const loadedUser: User = JSON.parse(localStorage.getItem('userData'));
 
-    if (!userData) {
+    if (!loadedUser) {
       return;
     }
 
-    const loadedUser = new User(
-      userData.id,
-      userData.username,
-      userData.email,
-      userData.lastLogin,
-      userData.token,
-      userData.tokenExpirationDate
-    );
-
-    if (loadedUser.token) {
+    if (!loadedUser.tokenExpirationDate || new Date().getSeconds() > loadedUser.tokenExpirationDate) {
+      return;
+    } else {
       this.user.next(loadedUser);
       this.updateLogin();
       this.autoLogout(loadedUser.tokenExpirationDate);
-    }
-
-    const loadedUsername = localStorage.getItem('username');
-    if (loadedUsername) {
-      this.username.next(loadedUsername);
     }
   }
 
   autoLogout(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
-    }, expirationDuration);
+    }, expirationDuration * 1000);
   }
 
   private handleAuthentication(userId: string, username: string, email: string, lastLogin: Date, token: string, expiresAt: number) {

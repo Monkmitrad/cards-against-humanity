@@ -12,12 +12,12 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private apiService: ApiService) { }
 
   ngOnInit() {
+    this.authService.autoLogin();
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
       window.scrollTo(0, 0);
     });
-    this.authService.autoLogin();
   }
 }
