@@ -24,7 +24,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         if (!user) {
           return next.handle(request);
         }
-        if (request.url.endsWith('/api/test')) {
+        if (request.url.includes('/api/')) {
           return next.handle(request);
         }
         const modifiedRequest = request.clone({params: new HttpParams().set('auth', user.token)});

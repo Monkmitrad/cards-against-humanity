@@ -24,6 +24,15 @@ export class ApiService {
   whiteDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/white';
   blackDeckUrl: string = 'https://cards-against-humanity-angular.firebaseio.com/decks/black';
 
+  apiUrl: string = '/api/';
+  apiWhiteUrl: string = this.apiUrl + 'card/white';
+  apiBlackUrl: string = this.apiUrl + 'card/black';
+  apiUserUrl: string = this.apiUrl + 'user/me';
+  apiWhiteDeckUrl: string = this.apiUrl + 'deck/white';
+  apiBlackDeckUrl: string = this.apiUrl + 'deck/black';
+  apiLoginUrl: string = this.apiUrl + 'login';
+  apiLogoutUrl: string = this.apiUrl + 'logout';
+
   constructor(private http: HttpClient) { }
 
   // Methods for white-cards and black-cards

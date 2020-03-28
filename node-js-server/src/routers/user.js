@@ -58,7 +58,11 @@ router.post('/api/logoutAll', auth, async (req, res) => {
 router.get('/api/user', auth, async (req, res) => {
     try {
         const users = await User.find({ });
-        res.send(users);
+        const sanitizedUsers = [];
+        users.forEach((user) => {
+            sanitizedUsers.push(user.getUsername());
+        });
+        res.send(sanitizedUsers);
     } catch (error) {
         res.status(500).send();
     }
@@ -68,29 +72,6 @@ router.get('/api/user', auth, async (req, res) => {
 router.get('/api/user/me', auth, async (req, res) => {
     res.send(req.user);
 })
-
-/*
-// get specific user by ID
-router.get('/api/user/:id', auth, async (req, res) => {
-    const _id = req.params.id;
-
-    try {
-        if (_id.match(/^[0-9a-fA-F]{24}$/)) {
-            // Yes, it's a valid ObjectId, proceed with `findById` call.
-            const user = await User.findById(_id);
-
-            if (!user) {
-                return res.status(404).send();
-            }
-            return res.send(user);
-        } else {
-            res.status(400).send({ "errorMessage":"Please provide valid 24-character hex-string" });
-        }
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-*/
 
 // update own user
 router.patch('/api/user/me', auth, async (req, res) => {

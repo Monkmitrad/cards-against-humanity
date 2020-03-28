@@ -41,6 +41,14 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
+userSchema.methods.getUsername = function () {
+    const user = this;
+    const userObject = user.toJSON();
+
+    delete userObject.email;
+
+    return userObject;
+}
 
 userSchema.methods.toJSON = function () {
     const user = this;
