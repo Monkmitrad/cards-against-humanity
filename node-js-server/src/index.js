@@ -6,13 +6,10 @@ const chalk = require('chalk');
 require('./db/mongoose');
 
 const userRouter = require('./routers/user');
-const cardRouter = require('./routers/user');
-
-const WhiteCard = require('./models/whiteCard');
-const BlackCard = require('./models/blackCard');
+const cardRouter = require('./routers/card');
 
 const _port = 4100;
-const _app_folder = '../angular/dist/';
+const _app_folder = '../../angular/dist/';
 const app = express();
 
 app.use((req, res, next) => {

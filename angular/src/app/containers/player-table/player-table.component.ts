@@ -19,8 +19,8 @@ export class PlayerTableComponent implements OnInit, OnDestroy {
   constructor(private apiService: ApiService, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.userSub = this.apiService.getAllUsers().subscribe(data => this.users = data);
-    this.usernameSub = this.authService.username.subscribe(data => this.ownUsername = data);
+    this.userSub = this.apiService.getAllUsers().subscribe((data: {username: string, lastLogin: Date}[]) => this.users = data);
+    this.usernameSub = this.authService.user.subscribe(user => {this.ownUsername = user.username; });
   }
 
   ngOnDestroy(): void {

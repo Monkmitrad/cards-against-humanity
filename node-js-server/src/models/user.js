@@ -27,18 +27,29 @@ const userSchema = new mongoose.Schema({
         token: {
             type: String,
             required: true
+        },
+        expiresAt: {
+            type: Number,
+            required: true
         }
     }]
 });
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({ _id: user._id.toString() }, 'mySecret', { expiresIn: '7 days' });
+    
+    const token = jwt.sign({ _id: user._id.toString() }, 'mySecret', { expiresIn: '1 day' });
+    const expiresAt = jwt.decode(token).exp;  
+    user.tokens = user.tokens.concat({ token, expiresAt });
 
-    user.tokens = user.tokens.concat({ token });
     await user.save();
+    return { token, expiresAt };
+}
 
-    return token;
+userSchema.methods.UpdateLogin = async function () {
+    const user = this;
+    user.lastLogin = new Date();
+    await user.save();
 }
 
 userSchema.methods.getUsername = function () {

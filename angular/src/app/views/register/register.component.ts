@@ -21,8 +21,7 @@ export class RegisterComponent {
     const password = form.value.email;
     const username = form.value.username;
 
-    this.authService.signup(email, password, username).subscribe(resData => {
-      console.log(resData);
+    this.authService.signup(email, password, username).subscribe(() => {
       this.router.navigate(['/game']);
     }, errorMessage => {
       console.log(errorMessage);

@@ -21,10 +21,9 @@ export class LoginComponent {
     const email = form.value.email;
     const password = form.value.password;
 
-    this.authService.signin(email, password).subscribe(resData => {
+    this.authService.signin(email, password).subscribe((data) => {
       this.router.navigate(['/game']);
     }, errorMessage => {
-      console.log(errorMessage);
       this.error = errorMessage;
     });
     form.reset();

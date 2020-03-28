@@ -1,16 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { exhaustMap, map } from 'rxjs/operators';
-import { of, Observable, from } from 'rxjs';
+import { exhaustMap, catchError, tap } from 'rxjs/operators';
+import { of, Observable, throwError } from 'rxjs';
 import { IDeck } from '../interfaces/ideck';
-import { User } from '../models/user';
-
 
 export interface CardResponse {
     id: {
       content: string;
     };
+}
+
+export interface AuthResponseData {
+  user: {
+    _id: string;
+    username: string;
+    email: string;
+    lastLogin: Date;
+  };
+  token: {
+    token: string;
+    expiresAt: number;
+  };
 }
 
 @Injectable({
@@ -27,7 +38,8 @@ export class ApiService {
   apiUrl: string = '/api/';
   apiWhiteUrl: string = this.apiUrl + 'card/white';
   apiBlackUrl: string = this.apiUrl + 'card/black';
-  apiUserUrl: string = this.apiUrl + 'user/me';
+  apiUserUrl: string = this.apiUrl + 'user';
+  apiOwnUserUrl: string = this.apiUrl + 'user/me';
   apiWhiteDeckUrl: string = this.apiUrl + 'deck/white';
   apiBlackDeckUrl: string = this.apiUrl + 'deck/black';
   apiLoginUrl: string = this.apiUrl + 'login';
@@ -38,20 +50,20 @@ export class ApiService {
   // Methods for white-cards and black-cards
 
   addWhiteCard(card: ICard) {
-    this.http.post(this.whiteUrl, {content: card.content});
+    this.http.post(this.apiWhiteUrl, {content: card.content});
   }
 
   addBlackCard(card: ICard) {
-    this.http.post(this.blackUrl, {content: card.content});
+    this.http.post(this.apiBlackUrl, {content: card.content});
   }
 
   getWhiteCards() {
-    return this.http.get(this.whiteUrl).pipe(
+    return this.http.get(this.apiWhiteUrl).pipe(
       exhaustMap(response => this.transformCardResponse(response)));
   }
 
   getBlackCards() {
-    return this.http.get(this.blackUrl).pipe(
+    return this.http.get(this.apiBlackUrl).pipe(
       exhaustMap(response => this.transformCardResponse(response)));
   }
 
@@ -100,40 +112,50 @@ export class ApiService {
 
   // Methods for AuthService
 
-  setUsername(userId: string, username: string): void {
-    const body = {username: username, lastLogin: new Date()};
-    this.http.put(this.userUrl + '/' + userId + '.json', body);
+  signup(email: string, password: string, username: string) {
+    return this.http.post<AuthResponseData>(this.apiUserUrl, {username, email, password}).pipe(
+      catchError(this.handleError), tap((responseData: AuthResponseData) => responseData)
+    );
   }
 
-  getUsername(userId: string): Observable<string> {
-    return this.http.get(this.userUrl + '/' + userId + '.json').pipe(
-      exhaustMap((data: {lastLogin: Date, username: string}) => of(data.username)));
+  login(email: string, password: string) {
+    return this.http.post(this.apiLoginUrl, {email, password}).pipe(
+      catchError(this.handleError), tap((responseData: AuthResponseData) => responseData)
+    );
   }
 
-  updateLogin(date: Date, userId: string) {
-    // this.http.patch(this.userUrl + '/' + userId + '.json', { lastLogin: date }).subscribe();
+  logout() {
+    return this.http.post(this.apiLogoutUrl, {}).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateLogin() {
+    return this.http.patch(this.apiOwnUserUrl, {lastLogin: new Date()}).pipe(
+      catchError(this.handleError)
+    );
   }
 
   // Methods for PlayerTable
 
   getAllUsers() {
-    const users: {lastLogin: Date, username: string}[] = [];
-    return this.http.get(this.userUrl + '.json').pipe(
-      exhaustMap((data: any) => {
-        if (data) {
-          Object.keys(data).forEach(element => {
-            users.push({lastLogin: data[element].lastLogin, username: data[element].username});
-            return users;
-          });
-          return of(users);
-        }
-      })
+    return this.http.get(this.apiUserUrl).pipe(
+      catchError(this.handleError), tap((responseData) => responseData)
     );
   }
 
-  // Test methods
+  private handleError(errorResponse: {errorMessage: string}) {
+    console.log(errorResponse);
+    let errorMessage = 'An unknown error occured!';
+    if (!errorResponse.errorMessage) {
+      return throwError(errorMessage);
+    }
+    switch (errorResponse.errorMessage) {
+      case 'Login failed!':
+        errorMessage = 'Login failed!';
+        break;
+    }
 
-  Test() {
-    this.http.get('/api/test').subscribe(data => console.log(data));
+    return throwError(errorMessage);
   }
 }

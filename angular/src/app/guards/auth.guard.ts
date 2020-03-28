@@ -17,11 +17,11 @@ export class AuthGuard implements CanActivate {
     return this.authService.user.pipe(
       take(1),
       map((user: User) => {
-      const isAuthenticated = !!user;
-      if (isAuthenticated) {
-        return true;
-      }
-      return this.router.createUrlTree(['/login']);
-    }));
+        const isAuthenticated = !!user;
+        if (isAuthenticated) {
+          return true;
+        }
+        return this.router.createUrlTree(['/login']);
+      }));
   }
 }

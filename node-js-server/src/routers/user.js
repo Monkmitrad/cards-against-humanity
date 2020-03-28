@@ -6,7 +6,6 @@ const router = new express.Router();
 // add new user (signup)
 router.post('/api/user', async (req, res) => {
     const user = new User(req.body);
-
     try {
         await user.save();
         const token = await user.generateAuthToken();
@@ -21,10 +20,12 @@ router.post('/api/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
+        await user.UpdateLogin();
         res.send({ user, token });
     } catch (error) {
         res.status(400).send({
-            errorMessage: 'Login failed!'
+            errorMessage: 'Login failed!',
+            error: error
         });
     }
 });
@@ -54,7 +55,7 @@ router.post('/api/logoutAll', auth, async (req, res) => {
     }
 });
 
-// get all users
+// get all usernames
 router.get('/api/user', auth, async (req, res) => {
     try {
         const users = await User.find({ });

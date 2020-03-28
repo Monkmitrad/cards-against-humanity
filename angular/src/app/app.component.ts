@@ -19,7 +19,5 @@ export class AppComponent implements OnInit {
       window.scrollTo(0, 0);
     });
     this.authService.autoLogin();
-
-    this.apiService.Test();
   }
 }
