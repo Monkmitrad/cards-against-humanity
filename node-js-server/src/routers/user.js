@@ -29,6 +29,31 @@ router.post('/api/login', async (req, res) => {
     }
 });
 
+// logout user
+router.post('/api/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token;
+        });
+        await req.user.save();
+
+        res.send();
+    } catch (error) {
+        res.status(500).send();
+    }
+});
+
+// logout of all sessions
+router.post('/api/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = [];
+        await req.user.save();
+        res.send();
+    } catch (error) {
+        res.status(500).send();
+    }
+});
+
 // get all users
 router.get('/api/user', auth, async (req, res) => {
     try {
@@ -39,10 +64,12 @@ router.get('/api/user', auth, async (req, res) => {
     }
 });
 
+// get own user
 router.get('/api/user/me', auth, async (req, res) => {
     res.send(req.user);
 })
 
+/*
 // get specific user by ID
 router.get('/api/user/:id', auth, async (req, res) => {
     const _id = req.params.id;
@@ -63,39 +90,37 @@ router.get('/api/user/:id', auth, async (req, res) => {
         res.status(500).send(error);
     }
 });
+*/
 
+// update own user
+router.patch('/api/user/me', auth, async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['lastLogin', 'username', 'password'];
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
-// update specific user by ID
-router.patch('/api/user/:id', auth, async (req, res) => {
-    const _id = req.params.id;
+    if (!isValidOperation) {
+        return res.status(400).send( { errorMessage: 'Invalid updates!' });
+    }
 
     try {
-        const updates = Object.keys(req.body);
-        const allowedUpdates = ['lastLogin', 'username', 'password'];
-        const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-        if (!isValidOperation) {
-            return res.status(400).send( { errorMessage: 'Invalid updates!' });
-        }
-
-        if (_id.match(/^[0-9a-fA-F]{24}$/)) {
-            const user = await User.findById(_id);
-
-            updates.forEach((update) => user[update] = req.body[update]);
-            await user.save();
+            updates.forEach((update) => req.user[update] = req.body[update]);
+            await req.user.save();
 
             // const user = await User.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true } );
 
-            if (!user) {
-                return res.status(404).send();
-            }
-
-            res.send(user);
-        } else {
-            res.status(400).send({ "errorMessage":"Please provide valid 24-character hex-string" });
-        }
+            res.send(req.user);
     } catch (error) {
         res.status(400).send(error);
+    }
+});
+
+// delete own user
+router.delete('/api/user/me', auth, async (req, res) => {
+    try {
+        await req.user.remove();
+        res.send(req.user);
+    } catch (error) {
+        res.status(500).send();
     }
 });
 
