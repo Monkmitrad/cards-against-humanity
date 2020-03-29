@@ -1,13 +1,13 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
+/angular/dist
 /dist-server
 /tmp
 /out-tsc
 
 # dependencies
-/node_modules
+node_modules
 package-lock.json
 
 # IDEs and editors
@@ -37,12 +37,13 @@ testem.log
 /typings
 
 # e2e
-/e2e/*.js
-/e2e/*.map
+/angular/e2e/*.js
+/angular/e2e/*.map
 
 # System Files
 .DS_Store
 Thumbs.db
 
 # own config file
-src/environments/config.json
+/angular/src/environments/config.json
+*.ps1
