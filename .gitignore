@@ -506,3 +506,4 @@ MigrationBackup/
 /angular/src/environments/config.json
 *.ps1
 *.njsproj
+/node-js-server/build
