@@ -38,6 +38,7 @@
     "mutationobserver-shim": "^0.3.3",
     "ngx-bootstrap": "^5.2.0",
     "ngx-perfect-scrollbar": "^8.0.0",
+    "ngx-socket-io": "^3.0.1",
     "rxjs": "^6.5.3",
     "simple-line-icons": "^2.4.1",
     "ts-helpers": "^1.1.2",

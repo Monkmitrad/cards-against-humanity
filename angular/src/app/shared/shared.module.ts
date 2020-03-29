@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:4100', options: {} };
 
 import { HttpRequestInterceptor } from './http-request.interceptor';
 import { WhiteCardComponent } from '../containers/play-cards/white-card';
 import { BlackCardComponent } from '../containers/play-cards/black-card';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -17,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     CommonModule,
     HttpClientModule,
+    SocketIoModule.forRoot(config),
   ],
   exports: [
     WhiteCardComponent,

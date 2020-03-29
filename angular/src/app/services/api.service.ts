@@ -38,6 +38,7 @@ export class ApiService {
   apiBlackDeckUrl: string = this.apiUrl + 'deck/black';
   apiLoginUrl: string = this.apiUrl + 'login';
   apiLogoutUrl: string = this.apiUrl + 'logout';
+  apiGameLoggedInUsersUrl: string = this.apiUrl + 'game/users';
 
   constructor(private http: HttpClient) { }
 
@@ -136,5 +137,13 @@ export class ApiService {
     }
 
     return throwError(errorMessage);
+  }
+
+  // Methods for game logic
+
+  getLoggedInUsers() {
+    return this.http.get(this.apiGameLoggedInUsersUrl).pipe(
+      catchError(this.handleError), tap((data: string[]) => data)
+    );
   }
 }

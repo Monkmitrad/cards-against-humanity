@@ -8,6 +8,8 @@ import { GameRoutingModule } from './game-routing.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { PlayerTableComponent } from '../../containers/player-table/player-table.component';
+import { LobbyComponent } from './lobby/lobby/lobby.component';
+import { LobbyTableComponent } from '../../containers/lobby-table/lobby-table.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { PlayerTableComponent } from '../../containers/player-table/player-table
   ],
   declarations: [
     GameComponent,
-    PlayerTableComponent
+    PlayerTableComponent,
+    LobbyTableComponent,
+    LobbyComponent
   ]
 })
 export class GameModule { }
