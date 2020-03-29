@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SocketIoService } from '../../../../services/socket-io.service';
+import { AuthService } from '../../../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-lobby',
@@ -8,12 +10,19 @@ import { SocketIoService } from '../../../../services/socket-io.service';
 })
 export class LobbyComponent implements OnInit {
 
-  constructor(private socketService: SocketIoService) { }
+  ownUsername: string = '';
+  usernameSub: Subscription;
+
+  constructor(private socketService: SocketIoService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.usernameSub = this.authService.user.subscribe(user => {this.ownUsername = user.username; });
+    this.usernameSub.unsubscribe();
   }
 
   onJoinGame(): void {
-    this.socketService.joinGame();
+    if (this.ownUsername) {
+      this.socketService.joinGame(this.ownUsername);
+    }
   }
 }

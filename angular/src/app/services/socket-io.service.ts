@@ -12,8 +12,8 @@ export class SocketIoService {
     this.socket.emit('message', message);
   }
 
-  joinGame(): void {
-    this.socket.emit('joinGame');
+  joinGame(username: string): void {
+    this.socket.emit('joinGame', username);
   }
 
   getLoggedInUsers(): string[] {

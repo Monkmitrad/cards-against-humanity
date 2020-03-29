@@ -17,10 +17,15 @@ const _port = 4100;
 const _app_folder = '../angular/dist/';
 const app = express();
 const server = http.createServer(app);
+
 const io = socketio(server);
 
+// ---- HANDLE IO CONNECTION ---- //
+io.on('connection', function(socket) {
+    require('./io/ioHandler')(socket);
+});
+
 app.use((req, res, next) => {
-    // console.log(req.url);
     next();
 });
 
@@ -56,16 +61,6 @@ app.all('*', (req, res) => {
         res.status(500).send();
     }
 });
-
-// ---- SOCKET.IO METHODS ---- //
-io.on('connection', (socket) => {
-    console.log('New WebSocket connection');
-
-    socket.on('message', (message) => {
-        console.log(message);
-    });
-})
-
 
 // ---- START UP THE NODE SERVER  ----
 server.listen(_port, function () {
