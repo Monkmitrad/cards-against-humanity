@@ -14,6 +14,6 @@ router.post('/api/game/join', auth, (req, res) => {
     } else {
         res.status(400).send({errorMessage: 'Already joined the game!'});
     }  
-})
+});
 
-module.exports = router
+module.exports = router;

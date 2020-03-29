@@ -15,4 +15,4 @@ const addUser = (username) => {
     }
 }
 
-module.exports = { getLoggedInUsers, addUser }
+module.exports = { getLoggedInUsers, addUser };
