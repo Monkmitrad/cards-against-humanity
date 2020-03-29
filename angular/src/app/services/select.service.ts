@@ -38,12 +38,10 @@ export class SelectService {
     if (this.selectedBlackCards.includes(id)) {
       // unselect card
       this.selectedBlackCards.splice(this.selectedBlackCards.indexOf(id), 1);
-      console.log(this.selectedBlackCards);
       return false;
     } else {
       // select card
       this.selectedBlackCards.push(id);
-      console.log(this.selectedBlackCards);
       return true;
     }
   }
@@ -57,7 +55,6 @@ export class SelectService {
   }
 
   getSelectedBlackCardsId(): string[] {
-    console.log(this.selectedBlackCards);
     return this.selectedBlackCards;
   }
 

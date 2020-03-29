@@ -6,7 +6,7 @@ const BlackDeck = mongoose.model('BlackDeck', {
         required: true,
         trim: true
     },
-    cards: {
+    cardIds: {
         type: [String],
         required: true
     }

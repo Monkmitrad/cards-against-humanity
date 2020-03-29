@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { exhaustMap, catchError, tap } from 'rxjs/operators';
+import { exhaustMap, catchError, tap, map } from 'rxjs/operators';
 import { of, Observable, throwError } from 'rxjs';
 import { IDeck } from '../interfaces/ideck';
 
@@ -70,7 +70,7 @@ export class ApiService {
   // Methods for DecksService
 
   saveWhiteDeck(deckName: string, cardIds: string[]) {
-    this.http.post(this.apiWhiteDeckUrl, {deckName, cardIds});
+    this.http.post(this.apiWhiteDeckUrl, {deckName, cardIds}).subscribe(response => console.log(response));
   }
 
   saveBlackDeck(deckName: string, cardIds: string[]) {
@@ -79,7 +79,7 @@ export class ApiService {
 
   getWhiteDecks() {
     return this.http.get(this.apiWhiteDeckUrl).pipe(
-      catchError(this.handleError), tap((data: IDeck[]) => data)
+      catchError(this.handleError), map((data: IDeck[]) => data)
     );
   }
 

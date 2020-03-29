@@ -6,7 +6,7 @@ const WhiteDeck = mongoose.model('WhiteDeck', {
         required: true,
         trim: true
     },
-    cards: {
+    cardIds: {
         type: [String],
         required: true
     }

@@ -28,7 +28,7 @@ export class WhiteCardsComponent implements OnInit {
     this.apiService.getWhiteCards().subscribe((cards: ICard[]) => this.whiteCards = cards);
   }
 
-  savePreset() {
+  saveDeck() {
     this.decksService.saveWhiteDeck('Test Deck', this.selectService.getSelectedWhiteCardsId());
   }
 

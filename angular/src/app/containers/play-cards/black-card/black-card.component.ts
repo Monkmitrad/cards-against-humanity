@@ -12,7 +12,7 @@ export class BlackCardComponent {
   @Input()
   public parentName: string = '';
   @Input()
-  public card: ICard = { id: '1', content: 'Test Black Card'};
+  public card: ICard = { _id: '1', content: 'Test Black Card'};
 
   public select = false;
 
@@ -20,7 +20,7 @@ export class BlackCardComponent {
 
   selectCard() {
     if (this.parentName === 'blackCardsDeck') {
-      this.select = this.selectService.multiSelectBlackCard(this.card.id);
+      this.select = this.selectService.multiSelectBlackCard(this.card._id);
     }
   }
 }
