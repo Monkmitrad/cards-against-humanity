@@ -11,9 +11,17 @@ const socketHandler = function(_io, socket) {
     });
 };
 
-const onUserJoined = function (username) {
+const onUserJoined = (username) => {
     io.emit('userJoined', username + ' has joined the game!');
+    updateClients();
+};
+
+const updateClients = () => {
     io.emit('joinedUsers', UserManager.getLoggedInUsers());
 };
 
-module.exports = { socketHandler, onUserJoined };
+const sendStatus = (status) => {
+    io.emit('status', status);
+};
+
+module.exports = { socketHandler, onUserJoined, updateClients, sendStatus };

@@ -27,6 +27,7 @@ io.on('connection', function(socket) {
 
 app.use((req, res, next) => {
     // console.log(req.url); // for debug
+    // console.log(req.body); // for debug
     next();
 });
 

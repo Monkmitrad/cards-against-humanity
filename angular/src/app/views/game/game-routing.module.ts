@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { GameComponent } from './game.component';
 import { LobbyComponent } from './lobby/lobby/lobby.component';
+import { GameGuard } from '../../guards/game.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: GameComponent,
+    component: LobbyComponent,
     data: {
       title: 'Cards Against Humanity'
     }
@@ -19,6 +20,14 @@ const routes: Routes = [
       title: 'Cards Against Humanity'
     }
   },
+  {
+    path: 'ingame',
+    component: GameComponent,
+    canActivate: [GameGuard],
+    data: {
+      title: 'Cards Against Humanity'
+    }
+  }
 ];
 
 @NgModule({

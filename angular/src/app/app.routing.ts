@@ -9,6 +9,8 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LegalNoticeComponent } from './views/legal-notice/legal-notice.component';
+import { PrivacyPolicyComponent } from './views/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +44,20 @@ export const routes: Routes = [
     component: RegisterComponent,
     data: {
       title: 'Register Page'
+    }
+  },
+  {
+    path: 'legal-notice',
+    component: LegalNoticeComponent,
+    data: {
+      title: 'Legal Notice'
+    }
+  },
+  {
+    path: 'Privacy policy',
+    component: PrivacyPolicyComponent,
+    data: {
+      title: 'Privacy policy'
     }
   },
   {

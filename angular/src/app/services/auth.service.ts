@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../models/user';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+import { User } from '../models/user';
 import { ApiService, AuthResponseData } from './api.service';
 
 @Injectable({
@@ -14,7 +16,7 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router, private apiService: ApiService) { }
+  constructor(private http: HttpClient, private router: Router, private apiService: ApiService, private jwtService: JwtHelperService) { }
 
   signup(email: string, password: string, username: string) {
     return this.apiService.signup(email, password, username).pipe(
@@ -65,7 +67,7 @@ export class AuthService {
       return;
     }
 
-    if (!loadedUser.tokenExpirationDate || new Date().getSeconds() > loadedUser.tokenExpirationDate) {
+    if (this.jwtService.isTokenExpired(loadedUser.token)) {
       return;
     } else {
       this.user.next(loadedUser);

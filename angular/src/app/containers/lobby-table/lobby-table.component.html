@@ -9,16 +9,22 @@
             <tr>
               <th class="text-center"><i class="icon-people"></i></th>
               <th>User</th>
+              <th>Ready</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let user of users" [ngClass]="{'bg-green': user.ready}">
               <td class="text-center">
                 <img src="assets/img/avatars/avatar.png" class="img-avatar">
                 <span class="avatar-status badge-success"></span>
               </td>
               <td>
-                <div [ngClass]="{'text-danger': user === ownUsername}">{{ user }}</div>
+                <div [ngClass]="{'text-danger': user.username === ownUsername}">{{ user.username }}</div>
+              </td>
+              <td>
+                <div class="form-check pl-0" *ngIf="user.username === ownUsername">
+                  <input type="checkbox" aria-label="ready" (change)="onReady($event)" [checked]="user.ready">
+                </div>
               </td>
             </tr>
           </tbody>

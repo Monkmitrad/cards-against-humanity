@@ -22,7 +22,6 @@ export class LobbyComponent implements OnInit {
   }
 
   onJoinGame(): void {
-    console.log('Join');
     this.apiService.joinGame().subscribe((data) => {
       if (data) {
         console.log(data);

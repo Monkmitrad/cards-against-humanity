@@ -4,6 +4,11 @@ import { Subscription } from 'rxjs';
 import { SocketIoService } from '../../services/socket-io.service';
 import { ApiService } from '../../services/api.service';
 
+export interface LoggedInUsers {
+  username: string;
+  ready: boolean;
+}
+
 @Component({
   selector: 'app-lobby-table',
   templateUrl: './lobby-table.component.html',
@@ -11,7 +16,7 @@ import { ApiService } from '../../services/api.service';
 })
 export class LobbyTableComponent implements OnInit, OnDestroy {
 
-  users: string[] = [];
+  users: LoggedInUsers[] = [];
   ownUsername = '';
 
   userSub: Subscription;
@@ -23,15 +28,18 @@ export class LobbyTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.usernameSub = this.authService.user.subscribe(user => {this.ownUsername = user.username; });
     this.usernameSub.unsubscribe();
-    this.userSub = this.apiService.getLoggedInUsers().subscribe((users: string[]) => this.users = users);
-    
-    this.userUpdateSub = this.socketService.joinedUsers.subscribe((users: string[]) => {
-      this.users = users;
-    });
+    this.userSub = this.apiService.getLoggedInUsers().subscribe((users: LoggedInUsers[]) => this.users = users);
+    this.userUpdateSub = this.socketService.joinedUsers.subscribe((users: LoggedInUsers[]) => this.users = users);
   }
 
   ngOnDestroy(): void {
     this.userUpdateSub.unsubscribe();
     this.userSub.unsubscribe();
+  }
+
+  onReady(evt: any) {
+    console.log(evt.currentTarget.checked);
+    this.apiService.ready(evt.currentTarget.checked).subscribe();
+    console.log(evt.currentTarget.checked);
   }
 }

@@ -8,8 +8,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4100', options: {} };
 import { HttpRequestInterceptor } from './http-request.interceptor';
 import { WhiteCardComponent } from '../containers/play-cards/white-card';
 import { BlackCardComponent } from '../containers/play-cards/black-card';
-
-
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,9 @@ import { BlackCardComponent } from '../containers/play-cards/black-card';
     HttpClientModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService
   ]
 })
 export class SharedModule { }

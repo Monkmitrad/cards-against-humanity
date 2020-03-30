@@ -6,7 +6,7 @@ const router = new express.Router();
 
 // add new white card
 router.post('/api/card/white', auth, (req, res) => {
-    const whiteCard = new WhiteCard(req.body);
+    const whiteCard = new WhiteCard(req.body.content);
     whiteCard.save().then(() => {
         res.status(201).send(whiteCard);
     }).catch((error) => {
@@ -16,7 +16,7 @@ router.post('/api/card/white', auth, (req, res) => {
 
 // add new black card
 router.post('/api/card/black', auth, (req, res) => {
-    const blackCard = new BlackCard(req.body);
+    const blackCard = new BlackCard(req.body.content);
     blackCard.save().then(() => {
         res.status(201).send(blackCard);
     }).catch((error) => {

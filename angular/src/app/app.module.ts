@@ -41,6 +41,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
+import { LegalNoticeComponent } from './views/legal-notice/legal-notice.component';
+import { PrivacyPolicyComponent } from './views/privacy-policy/privacy-policy.component';
 
 @NgModule({
   imports: [
@@ -65,6 +67,8 @@ import { SharedModule } from './shared/shared.module';
     P500Component,
     LoginComponent,
     RegisterComponent,
+    LegalNoticeComponent,
+    PrivacyPolicyComponent,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

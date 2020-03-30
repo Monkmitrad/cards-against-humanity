@@ -4,6 +4,7 @@ import { ICard } from '../interfaces/icard';
 import { catchError, tap, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { IDeck } from '../interfaces/ideck';
+import { LoggedInUsers } from '../containers/lobby-table/lobby-table.component';
 
 export interface AuthResponseData {
   user: {
@@ -46,13 +47,13 @@ export class ApiService {
   // Methods for white-cards and black-cards
 
   addWhiteCard(content: string) {
-    this.http.post(this.apiWhiteUrl, content).pipe(
+    this.http.post(this.apiWhiteUrl, {content}).pipe(
       catchError(this.handleError), tap(response => response)
     );
   }
 
   addBlackCard(content: string) {
-    return this.http.post(this.apiBlackUrl, content).pipe(
+    return this.http.post(this.apiBlackUrl, {content}).pipe(
       catchError(this.handleError), tap(response => response)
     );
   }
@@ -137,27 +138,40 @@ export class ApiService {
       case 'Already joined the game!':
         errorMessage =  'User already joined the game!';
         break;
+      case 'Game already started!':
+        errorMessage =  'Game already started!';
+        break;
       default:
         errorMessage = errorResponse.errorMessage;
         break;
     }
 
-    return throwError(errorMessage);
+    return errorMessage;
   }
 
   // Methods for game logic
 
   getLoggedInUsers() {
     return this.http.get(this.apiGameLoggedInUsersUrl).pipe(
-      catchError(this.handleError), tap((data: string[]) => data)
+      catchError(this.handleError), tap((data: LoggedInUsers[]) => data)
     );
   }
 
   joinGame() {
-    return this.http.post('/api/game/join', {}).pipe(
-      catchError(this.handleError), tap((response) => {
-        return response;
-      })
+    return this.http.post('/api/game/lobby/join', {}).pipe(
+      catchError(this.handleError), tap((response) => response)
+    );
+  }
+
+  getGameStatus() {
+    return this.http.get('/api/game/status').pipe(
+      catchError(this.handleError), tap((data) => data)
+    );
+  }
+
+  ready(status: boolean) {
+    return this.http.post('/api/game/lobby/ready', {status}).pipe(
+      catchError(this.handleError), tap((data) => data)
     );
   }
 }
