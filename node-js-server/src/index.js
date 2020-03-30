@@ -22,10 +22,11 @@ const io = socketio(server);
 
 // ---- HANDLE IO CONNECTION ---- //
 io.on('connection', function(socket) {
-    require('./io/ioHandler')(socket);
+    require('./io/ioHandler').socketHandler(io, socket);
 });
 
 app.use((req, res, next) => {
+    console.log(req.url);
     next();
 });
 

@@ -1,7 +1,19 @@
-module.exports = function(socket) {
+const UserManager = require('../game/userManager');
+
+let io = undefined;
+
+const socketHandler = function(_io, socket) {
     console.log('New WebSocket connection');
+    io = _io;
 
     socket.on('message', (message) => {
         console.log(message);
     });
-  };
+};
+
+const onUserJoined = function (username) {
+    io.emit('userJoined', username + ' has joined the game!');
+    io.emit('joinedUsers', UserManager.getLoggedInUsers());
+};
+
+module.exports = { socketHandler, onUserJoined };

@@ -13,18 +13,20 @@ export class LobbyTableComponent implements OnInit, OnDestroy {
   users: string[] = [];
   ownUsername = '';
 
-  userSub: Subscription;
   usernameSub: Subscription;
+  userUpdateSub: Subscription;
 
   constructor(private authService: AuthService, private socketService: SocketIoService) { }
 
   ngOnInit(): void {
-    this.users = this.socketService.getLoggedInUsers();
     this.usernameSub = this.authService.user.subscribe(user => {this.ownUsername = user.username; });
     this.usernameSub.unsubscribe();
+    this.userUpdateSub = this.socketService.joinedUsers.subscribe((users: string[]) => {
+      this.users = users;
+    });
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
+    this.userUpdateSub.unsubscribe();
   }
 }

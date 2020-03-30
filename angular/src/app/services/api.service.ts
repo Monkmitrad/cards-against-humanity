@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { exhaustMap, catchError, tap, map } from 'rxjs/operators';
-import { of, Observable, throwError } from 'rxjs';
+import { catchError, tap, map } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { IDeck } from '../interfaces/ideck';
 
 export interface AuthResponseData {
@@ -39,6 +39,7 @@ export class ApiService {
   apiLoginUrl: string = this.apiUrl + 'login';
   apiLogoutUrl: string = this.apiUrl + 'logout';
   apiGameLoggedInUsersUrl: string = this.apiUrl + 'game/users';
+  apiGameJoinUrl: string = this.apiUrl + 'game/join';
 
   constructor(private http: HttpClient) { }
 
@@ -134,6 +135,9 @@ export class ApiService {
       case 'Login failed!':
         errorMessage = 'Login failed!';
         break;
+      default:
+        errorMessage = errorResponse.errorMessage;
+        break;
     }
 
     return throwError(errorMessage);
@@ -144,6 +148,14 @@ export class ApiService {
   getLoggedInUsers() {
     return this.http.get(this.apiGameLoggedInUsersUrl).pipe(
       catchError(this.handleError), tap((data: string[]) => data)
+    );
+  }
+
+  joinGame() {
+    return this.http.post('/api/game/join', {}).pipe(
+      catchError(this.handleError), tap((response) => {
+        return response;
+      })
     );
   }
 }
