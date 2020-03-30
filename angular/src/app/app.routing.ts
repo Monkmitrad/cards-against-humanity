@@ -48,17 +48,29 @@ export const routes: Routes = [
   },
   {
     path: 'legal-notice',
-    component: LegalNoticeComponent,
+    component: DefaultLayoutComponent,
     data: {
       title: 'Legal Notice'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: LegalNoticeComponent
+      }
+    ]
   },
   {
-    path: 'Privacy policy',
-    component: PrivacyPolicyComponent,
+    path: 'privacy-policy',
+    component: DefaultLayoutComponent,
     data: {
       title: 'Privacy policy'
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: PrivacyPolicyComponent
+      }
+    ]
   },
   {
     path: '',

@@ -15,7 +15,7 @@
       </div>
     </li>
     <li class="nav-item px-3" *ngIf="isAuthenticated">
-      <a class="nav-link" (click)="onLogout()">Logout</a>
+      <a class="nav-link" href="javascript:void(0)" (click)="onLogout()">Logout</a>
     </li>
   </ul>
 </app-header>
@@ -33,5 +33,10 @@
 </div>
 <app-footer>
   <span>Cards Against Humanity &copy; 2020 Björn Biester</span>
-  <span class="ml-auto">Powered by Angular</span>
+  <div class="flex-fill"></div>
+  <a class="nav-link" [routerLink]="['/legal-notice']">Legal Notice</a>
+  <a class="nav-link" [routerLink]="['/privacy-policy']">Privacy Policy</a>
+  <span>Powered by</span>
+  <a class="nav-link pl-1" target="_blank" href="https://angular.io">Angular</a>
+  
 </app-footer>

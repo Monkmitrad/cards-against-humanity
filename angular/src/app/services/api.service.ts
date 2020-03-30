@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { catchError, tap, map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { IDeck } from '../interfaces/ideck';
 import { LoggedInUsers } from '../containers/lobby-table/lobby-table.component';
+import { IGameInfo } from '../interfaces/igame-info';
 
 export interface AuthResponseData {
   user: {
@@ -48,47 +49,51 @@ export class ApiService {
 
   addWhiteCard(content: string) {
     this.http.post(this.apiWhiteUrl, {content}).pipe(
-      catchError(this.handleError), tap(response => response)
+      tap((response) => response,  (error) => this.handleError(error))
     );
   }
 
   addBlackCard(content: string) {
     return this.http.post(this.apiBlackUrl, {content}).pipe(
-      catchError(this.handleError), tap(response => response)
+      tap((response) => response,  (error) => this.handleError(error))
     );
   }
 
   getWhiteCards() {
     return this.http.get(this.apiWhiteUrl).pipe(
-      catchError(this.handleError), tap((data: ICard[]) => data)
+      tap((data: ICard[]) => data, (error) => this.handleError(error))
     );
   }
 
   getBlackCards() {
     return this.http.get(this.apiBlackUrl).pipe(
-      catchError(this.handleError), tap((data: ICard[]) => data)
+      tap((data: ICard[]) => data, (error) => this.handleError(error))
     );
   }
 
   // Methods for DecksService
 
   saveWhiteDeck(deckName: string, cardIds: string[]) {
-    this.http.post(this.apiWhiteDeckUrl, {deckName, cardIds}).subscribe(response => console.log(response));
+    this.http.post(this.apiWhiteDeckUrl, {deckName, cardIds}).pipe(
+      tap((response) => response,  (error) => this.handleError(error))
+    );
   }
 
   saveBlackDeck(deckName: string, cardIds: string[]) {
-    this.http.post(this.apiBlackDeckUrl, {deckName, cardIds});
+    this.http.post(this.apiBlackDeckUrl, {deckName, cardIds}).pipe(
+      tap((response) => response,  (error) => this.handleError(error))
+    );
   }
 
   getWhiteDecks() {
     return this.http.get(this.apiWhiteDeckUrl).pipe(
-      catchError(this.handleError), map((data: IDeck[]) => data)
+      tap((data: IDeck[]) => data, (error) => this.handleError(error))
     );
   }
 
   getBlackDecks() {
     return this.http.get(this.apiBlackDeckUrl).pipe(
-      catchError(this.handleError), tap((data: IDeck[]) => data)
+      tap((data: IDeck[]) => data, (error) => this.handleError(error))
     );
   }
 
@@ -96,25 +101,25 @@ export class ApiService {
 
   signup(email: string, password: string, username: string) {
     return this.http.post<AuthResponseData>(this.apiUserUrl, {username, email, password}).pipe(
-      catchError(this.handleError), tap((responseData: AuthResponseData) => responseData)
+      tap((responseData: AuthResponseData) => responseData, (error) => this.handleError(error))
     );
   }
 
   login(email: string, password: string) {
     return this.http.post(this.apiLoginUrl, {email, password}).pipe(
-      catchError(this.handleError), tap((responseData: AuthResponseData) => responseData)
+      tap((responseData: AuthResponseData) => responseData, (error) => this.handleError(error))
     );
   }
 
   logout() {
     return this.http.post(this.apiLogoutUrl, {}).pipe(
-      catchError(this.handleError)
+      tap((data) => data,  (error) => this.handleError(error))
     );
   }
 
   updateLogin() {
     return this.http.patch(this.apiOwnUserUrl, {lastLogin: new Date()}).pipe(
-      catchError(this.handleError)
+      tap((data) => data,  (error) => this.handleError(error))
     );
   }
 
@@ -122,16 +127,16 @@ export class ApiService {
 
   getAllUsers() {
     return this.http.get(this.apiUserUrl).pipe(
-      catchError(this.handleError), tap((responseData) => responseData)
+      tap((responseData) => responseData, (error) => this.handleError(error))
     );
   }
 
-  private handleError(errorResponse: {errorMessage: string}) {
+  private handleError(errorResponse: HttpErrorResponse) {
     let errorMessage = 'An unknown error occured!';
-    if (!errorResponse.errorMessage) {
-      return throwError(errorMessage);
+    if (!errorResponse.error.errorMessage) {
+      throw(errorMessage);
     }
-    switch (errorResponse.errorMessage) {
+    switch (errorResponse.error.errorMessage) {
       case 'Login failed!':
         errorMessage = 'Login failed!';
         break;
@@ -139,39 +144,48 @@ export class ApiService {
         errorMessage =  'User already joined the game!';
         break;
       case 'Game already started!':
-        errorMessage =  'Game already started!';
+        errorMessage = errorResponse.statusText + ': Game has already started!';
+        break;
+      case 'This API endpoint does not exist!':
+        errorMessage = errorResponse.statusText + ': Wrong API endpoint!';
         break;
       default:
-        errorMessage = errorResponse.errorMessage;
+        errorMessage = errorResponse.error.errorMessage;
         break;
     }
 
-    return errorMessage;
+    throw(errorMessage);
   }
 
   // Methods for game logic
 
   getLoggedInUsers() {
     return this.http.get(this.apiGameLoggedInUsersUrl).pipe(
-      catchError(this.handleError), tap((data: LoggedInUsers[]) => data)
+      tap((data: LoggedInUsers[]) => data, (error) => this.handleError(error))
     );
   }
 
   joinGame() {
     return this.http.post('/api/game/lobby/join', {}).pipe(
-      catchError(this.handleError), tap((response) => response)
+      tap((response) => response, (error) => this.handleError(error))
     );
   }
 
   getGameStatus() {
     return this.http.get('/api/game/status').pipe(
-      catchError(this.handleError), tap((data) => data)
+      tap((data) => data, (error) => this.handleError(error))
     );
   }
 
   ready(status: boolean) {
     return this.http.post('/api/game/lobby/ready', {status}).pipe(
-      catchError(this.handleError), tap((data) => data)
+      tap((response) => response, (error) => this.handleError(error))
+    );
+  }
+
+  getIngameInfo() {
+    return this.http.get('/api/game/ingame/info').pipe(
+      tap((data: IGameInfo) => data, (error) => this.handleError(error))
     );
   }
 }

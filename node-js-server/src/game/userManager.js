@@ -1,9 +1,8 @@
-const GameManager = require('./gameManager');
 const loggedInUsers = [];
 
 const getLoggedInUsers = () => {
     return loggedInUsers;
-}
+};
 
 const addUser = (username) => {
     if (!loggedInUsers.some((user) => user.username == username)) {
@@ -21,7 +20,7 @@ const ready = (username, status) => {
     if (!loggedInUsers.includes(username)) {
         userIndex = loggedInUsers.findIndex((user) => username == user.username);
         loggedInUsers[userIndex].ready = status;
-        checkReady();
+        return checkReady();
     } else {
         throw new Error('Invalid user');
     }
@@ -29,10 +28,15 @@ const ready = (username, status) => {
 
 const checkReady = () => {
     const users = getLoggedInUsers();
-    console.log(users.length);
-    if(users.length > 1 && users.every((user) => user.ready)) {
-        GameManager.startGame();
-    };
+    if (users.length > 1 && users.every((user) => user.ready)) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
-module.exports = { getLoggedInUsers, addUser, ready };
+const doesUserPlay = (username) => {
+    return loggedInUsers.some((user) => user.username == username)
+}
+
+module.exports = { getLoggedInUsers, addUser, ready, doesUserPlay };

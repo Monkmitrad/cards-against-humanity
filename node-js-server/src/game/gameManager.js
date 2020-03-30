@@ -1,11 +1,24 @@
 const IoHandler = require('../io/ioHandler');
 
 const gameStatuses = {
-    NotStarted: 'notStarted',
-    Started: 'started'
+    NotStarted: 'NotStarted',
+    Started: 'Started'
 }
 
-const gameStatus = gameStatuses.NotStarted;
+let gameStatus = gameStatuses.NotStarted;
+
+class IngameInfo {
+    constructor(players, currentCzar) {
+        this.players = players;
+        this.currentCzar = currentCzar;
+    }
+}
+
+const ingameInfo = new IngameInfo([], '');
+console.log(ingameInfo);
+ingameInfo.players.push({username: 'Dieter', points: 0, played: false});
+ingameInfo.currentCzar = 'Dieter';
+console.log(ingameInfo);
 
 const getGameStatus = () => {
     return gameStatus;
@@ -17,4 +30,8 @@ const startGame = () => {
     IoHandler.sendStatus(gameStatus);
 };
 
-module.exports = {getGameStatus, gameStatuses, startGame }
+const getIngameInfo = () => {
+    return ingameInfo;
+}
+
+module.exports = {getGameStatus, gameStatuses, startGame, getIngameInfo };

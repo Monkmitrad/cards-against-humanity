@@ -8,10 +8,7 @@ import { GameGuard } from '../../guards/game.guard';
 const routes: Routes = [
   {
     path: '',
-    component: LobbyComponent,
-    data: {
-      title: 'Cards Against Humanity'
-    }
+    redirectTo: 'lobby',
   },
   {
     path: 'lobby',

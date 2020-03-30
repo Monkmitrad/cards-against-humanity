@@ -26,8 +26,7 @@ export class AuthService {
           data.user.username,
           data.user.email,
           data.user.lastLogin,
-          data.token.token,
-          data.token.expiresAt
+          data.token.token
         );
       }, error => error)
     );
@@ -42,7 +41,6 @@ export class AuthService {
           data.user.email,
           data.user.lastLogin,
           data.token.token,
-          data.token.expiresAt
         );
       }, error => error)
     );
@@ -72,7 +70,7 @@ export class AuthService {
     } else {
       this.user.next(loadedUser);
       this.updateLogin();
-      this.autoLogout(loadedUser.tokenExpirationDate);
+      this.autoLogout(this.jwtService.getTokenExpirationDate(loadedUser.token).getMilliseconds());
     }
   }
 
@@ -82,10 +80,10 @@ export class AuthService {
     }, expirationDuration * 1000);
   }
 
-  private handleAuthentication(userId: string, username: string, email: string, lastLogin: Date, token: string, expiresAt: number) {
-    const user = new User(userId, username, email, lastLogin, token, expiresAt);
+  private handleAuthentication(userId: string, username: string, email: string, lastLogin: Date, token: string) {
+    const user = new User(userId, username, email, lastLogin, token);
     this.user.next(user);
-    this.autoLogout(expiresAt);
+    this.autoLogout(this.jwtService.getTokenExpirationDate(token).getMilliseconds());
     localStorage.setItem('userData', JSON.stringify(user));
   }
 

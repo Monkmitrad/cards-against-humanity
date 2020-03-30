@@ -38,8 +38,6 @@ export class LobbyTableComponent implements OnInit, OnDestroy {
   }
 
   onReady(evt: any) {
-    console.log(evt.currentTarget.checked);
     this.apiService.ready(evt.currentTarget.checked).subscribe();
-    console.log(evt.currentTarget.checked);
   }
 }

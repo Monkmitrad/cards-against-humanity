@@ -3,6 +3,8 @@ import { SocketIoService } from '../../../../services/socket-io.service';
 import { AuthService } from '../../../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../../../../services/api.service';
+import { GameStatus } from '../../../../models/game-status.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lobby',
@@ -13,12 +15,16 @@ export class LobbyComponent implements OnInit {
 
   ownUsername: string = '';
   usernameSub: Subscription;
+  gameStatusSub: Subscription;
 
-  constructor(private socketService: SocketIoService, private authService: AuthService, private apiService: ApiService) { }
+  constructor(private socketService: SocketIoService, private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
-    this.usernameSub = this.authService.user.subscribe(user => {this.ownUsername = user.username; });
-    this.usernameSub.unsubscribe();
+    this.gameStatusSub = this.socketService.gameStatus.subscribe((status: GameStatus) => {
+      if (status === GameStatus.Started) {
+        this.router.navigate(['/game/ingame']);
+      }
+    });
   }
 
   onJoinGame(): void {

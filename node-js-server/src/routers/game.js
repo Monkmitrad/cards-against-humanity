@@ -12,7 +12,7 @@ router.get('/api/game/users', auth, async (req, res) => {
 
 // get game status
 router.get('/api/game/status', auth, (req, res) => {
-    res.send(GameManager.getGameStatus());
+    res.send({status: GameManager.getGameStatus()});
 });
 
 // user wants to join game
@@ -29,16 +29,28 @@ router.post('/api/game/lobby/join', auth, (req, res) => {
     }
 });
 
-
-
 // user makes himself ready
 router.post('/api/game/lobby/ready', auth, (req, res) => {
     if (GameManager.getGameStatus() == GameManager.gameStatuses.NotStarted) {
-        UserManager.ready(req.user.username, req.body.status);
-        IoHandler.updateClients();
+        if (UserManager.ready(req.user.username, req.body.status)) {
+            IoHandler.updateClients();
+            GameManager.startGame();
+        } else {
+            IoHandler.updateClients();
+        }
+        
         res.send();
     } else {
         res.status(400).send({errorMessage: 'Game already started!'});
+    }
+});
+
+// user request ingame info
+router.get('/api/game/ingame/info', auth, (req, res) => {
+    if (UserManager.doesUserPlay(req.user.username)) {
+        res.send({info: GameManager.getIngameInfo()});
+    } else {
+        res.status(400).send({errorMessage: 'This user does not play at the moment!'});
     }
 });
 
