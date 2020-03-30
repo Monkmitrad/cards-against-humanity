@@ -10,9 +10,7 @@ router.get('/api/game/users', auth, async (req, res) => {
 });
 
 router.post('/api/game/join', auth, (req, res) => {
-    console.log('JoinPre');
     if (UserManager.addUser(req.user.username)) {
-        console.log('JoinPost');
         IoHandler.onUserJoined(req.user.username);
         res.send();
     } else {

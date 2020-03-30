@@ -126,7 +126,6 @@ export class ApiService {
   }
 
   private handleError(errorResponse: {errorMessage: string}) {
-    console.log(errorResponse);
     let errorMessage = 'An unknown error occured!';
     if (!errorResponse.errorMessage) {
       return throwError(errorMessage);
@@ -134,6 +133,9 @@ export class ApiService {
     switch (errorResponse.errorMessage) {
       case 'Login failed!':
         errorMessage = 'Login failed!';
+        break;
+      case 'Already joined the game!':
+        errorMessage =  'User already joined the game!';
         break;
       default:
         errorMessage = errorResponse.errorMessage;

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { SocketIoService } from '../../services/socket-io.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-lobby-table',
@@ -13,14 +14,17 @@ export class LobbyTableComponent implements OnInit, OnDestroy {
   users: string[] = [];
   ownUsername = '';
 
+  userSub: Subscription;
   usernameSub: Subscription;
   userUpdateSub: Subscription;
 
-  constructor(private authService: AuthService, private socketService: SocketIoService) { }
+  constructor(private authService: AuthService, private socketService: SocketIoService, private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.usernameSub = this.authService.user.subscribe(user => {this.ownUsername = user.username; });
     this.usernameSub.unsubscribe();
+    this.userSub = this.apiService.getLoggedInUsers().subscribe((users: string[]) => this.users = users);
+    
     this.userUpdateSub = this.socketService.joinedUsers.subscribe((users: string[]) => {
       this.users = users;
     });
@@ -28,5 +32,6 @@ export class LobbyTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userUpdateSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 }
