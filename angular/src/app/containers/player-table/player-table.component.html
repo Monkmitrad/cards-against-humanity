@@ -9,12 +9,12 @@
             <tr>
               <th class="text-center"><i class="icon-people"></i></th>
               <th>User</th>
-              <th>Played</th>
               <th>Points</th>
+              <th>Played</th>
             </tr>
           </thead>
-          <tbody>
-            <tr *ngFor="let user of users">
+          <tbody *ngIf="users">
+            <tr *ngFor="let user of users.players" [ngClass]="{'bg-blue': users.currentCzar === user.username}">
               <td class="text-center">
                 <img src="assets/img/avatars/avatar.png" class="img-avatar">
                 <span class="avatar-status badge-success"></span>
@@ -26,11 +26,25 @@
                 </div>
               </td>
               <td>
-                <div class="small text-muted">Last login</div>
-                <strong>{{ user.lastLogin | date: 'dd.MM.yyyy HH:mm' }}</strong>
+                <strong>{{user.points}}</strong>
               </td>
               <td>
-                <strong>50</strong>
+                <div *ngIf="users.currentCzar !== user.username">
+                  <ng-container *ngIf="user.played; else notPlayed">
+                    <strong>
+                      <span class="checkmark">
+                        <div class="checkmark_circle"></div>
+                        <div class="checkmark_stem"></div>
+                        <div class="checkmark_kick"></div>
+                      </span>
+                    </strong>
+                  </ng-container>
+                  <ng-template #notPlayed>
+                    <strong>
+                      <span class="close-icon"></span>
+                    </strong>
+                  </ng-template>
+                </div>
               </td>
             </tr>
           </tbody>

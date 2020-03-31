@@ -24,4 +24,8 @@ const sendStatus = (status) => {
     io.emit('status', status);
 };
 
-module.exports = { socketHandler, onUserJoined, updateClients, sendStatus };
+const updateGame = (ingameInfo) => {
+    io.emit('gameUpdate', ingameInfo);
+}
+
+module.exports = { socketHandler, onUserJoined, updateClients, sendStatus, updateGame };

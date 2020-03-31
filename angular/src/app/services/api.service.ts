@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 import { IDeck } from '../interfaces/ideck';
 import { LoggedInUsers } from '../containers/lobby-table/lobby-table.component';
 import { IGameInfo } from '../interfaces/igame-info';
@@ -149,6 +148,9 @@ export class ApiService {
       case 'This API endpoint does not exist!':
         errorMessage = errorResponse.statusText + ': Wrong API endpoint!';
         break;
+      case 'Invalid Card ID':
+        errorMessage = errorResponse.statusText + ': Card has an invalid ID';
+        break;
       default:
         errorMessage = errorResponse.error.errorMessage;
         break;
@@ -185,7 +187,13 @@ export class ApiService {
 
   getIngameInfo() {
     return this.http.get('/api/game/ingame/info').pipe(
-      tap((data: IGameInfo) => data, (error) => this.handleError(error))
+      map((data: {info: IGameInfo}) => data.info, (error) => this.handleError(error))
+    );
+  }
+
+  submitCard(cardId: string) {
+    return this.http.post('/api/game/ingame/submitCard', {cardId}).pipe(
+      tap((data) => data, (error) => this.handleError(error))
     );
   }
 }

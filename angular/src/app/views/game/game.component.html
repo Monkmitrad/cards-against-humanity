@@ -26,13 +26,11 @@
           </div><!--/.row-->
         </div><!--/.card-header-->
         <div class="card-body">
-          <div class="row">
             <div class="card-deck">
-              <app-white-card [parentName]="'game'"></app-white-card>
-              <app-white-card [parentName]="'game'"></app-white-card>
-              <app-white-card [parentName]="'game'"></app-white-card>
+              <div class="col-sm5" *ngFor="let card of whiteCards">
+                <app-white-card [card]="card" [parentName]="'game'"></app-white-card>
+              </div>
             </div><!--/.card-deck-->
-          </div><!--/.row-->
         </div><!--/.card-body-->
       </div><!--/.card-->
     </div><!--/.col-->
