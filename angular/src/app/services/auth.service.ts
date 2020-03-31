@@ -70,20 +70,20 @@ export class AuthService {
     } else {
       this.user.next(loadedUser);
       this.updateLogin();
-      this.autoLogout(this.jwtService.getTokenExpirationDate(loadedUser.token).getMilliseconds());
+      this.autoLogout(this.jwtService.getTokenExpirationDate(loadedUser.token));
     }
   }
 
-  autoLogout(expirationDuration: number) {
+  autoLogout(expirationDate: Date) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
-    }, expirationDuration * 1000);
+    }, expirationDate.getTime() - new Date().getTime());
   }
 
   private handleAuthentication(userId: string, username: string, email: string, lastLogin: Date, token: string) {
     const user = new User(userId, username, email, lastLogin, token);
     this.user.next(user);
-    this.autoLogout(this.jwtService.getTokenExpirationDate(token).getMilliseconds());
+    this.autoLogout(this.jwtService.getTokenExpirationDate(token));
     localStorage.setItem('userData', JSON.stringify(user));
   }
 

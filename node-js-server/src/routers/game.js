@@ -34,7 +34,7 @@ router.post('/api/game/lobby/ready', auth, (req, res) => {
     if (GameManager.getGameStatus() == GameManager.gameStatuses.NotStarted) {
         if (UserManager.ready(req.user.username, req.body.status)) {
             IoHandler.updateClients();
-            GameManager.startGame();
+            GameManager.startGame(UserManager.getLoggedInUsers());
         } else {
             IoHandler.updateClients();
         }
