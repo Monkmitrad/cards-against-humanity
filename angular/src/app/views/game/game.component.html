@@ -22,7 +22,7 @@
         <div class="card-header">
           <div class="row">
             <h4>White Card Deck</h4>
-            <button (click)="submitCard()" class="ml-auto">Submit</button>
+            <button (click)="submitCard()" [disabled]="disabled" class="ml-auto">Submit</button>
           </div><!--/.row-->
         </div><!--/.card-header-->
         <div class="card-body">

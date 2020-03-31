@@ -10,16 +10,14 @@ import { GameStatus } from '../models/game-status.enum';
 })
 export class GameGuard implements CanActivate {
 
-  gameStatus: GameStatus;
-
   constructor(private apiService: ApiService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, router: RouterStateSnapshot): boolean | Promise<boolean> | Observable<boolean | UrlTree> {
-    return this.apiService.getGameStatus().pipe(map((data: {status: string}) => {
-        switch (data.status) {
-          case 'NotStarted':
+    return this.apiService.getGameStatus().pipe(map((status: GameStatus) => {
+        switch (status) {
+          case GameStatus.NotStarted:
             return this.router.createUrlTree(['/game/lobby']);
-          case 'Started':
+          case GameStatus.Submit: case GameStatus.Reveil:
             return true;
           default:
             return this.router.createUrlTree(['/game/lobby']);

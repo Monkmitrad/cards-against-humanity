@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ICard } from '../interfaces/icard';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, catchError } from 'rxjs/operators';
 import { IDeck } from '../interfaces/ideck';
 import { LoggedInUsers } from '../containers/lobby-table/lobby-table.component';
 import { IGameInfo } from '../interfaces/igame-info';
+import { GameStatus } from '../models/game-status.enum';
 
 export interface AuthResponseData {
   user: {
@@ -175,7 +176,7 @@ export class ApiService {
 
   getGameStatus() {
     return this.http.get('/api/game/status').pipe(
-      tap((data) => data, (error) => this.handleError(error))
+      catchError((error: HttpErrorResponse) => this.handleError), map((data: {status: GameStatus}) => data.status)
     );
   }
 
@@ -187,7 +188,7 @@ export class ApiService {
 
   getIngameInfo() {
     return this.http.get('/api/game/ingame/info').pipe(
-      map((data: {info: IGameInfo}) => data.info, (error) => this.handleError(error))
+      catchError((error: HttpErrorResponse) => this.handleError), map((data: {info: IGameInfo}) => data.info)
     );
   }
 

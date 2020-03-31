@@ -23,13 +23,12 @@ export class SocketIoService {
       this.joinedUsers.next(users);
     });
 
-    this.socket.on('status', (status: string) => {
-      this.gameStatus.next(GameStatus[status]);
+    this.socket.on('status', (status: GameStatus) => {
+      this.gameStatus.next(status);
     });
 
     this.socket.on('gameUpdate', (ingameInfo: IGameInfo) => {
       this.gameInfo.next(ingameInfo);
-      console.log(ingameInfo);
     });
   }
 

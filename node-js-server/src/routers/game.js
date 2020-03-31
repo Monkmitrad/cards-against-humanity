@@ -18,7 +18,7 @@ router.get('/api/game/status', auth, (req, res) => {
 
 // user wants to join game
 router.post('/api/game/lobby/join', auth, (req, res) => {
-    if (GameManager.getGameStatus() == GameManager.gameStatuses.NotStarted) {
+    if (GameManager.getGameStatus() === GameManager.gameStatuses.NotStarted) {
         if (UserManager.addUser(req.user.username)) {
             IoHandler.onUserJoined(req.user.username);
             res.send();
@@ -56,7 +56,7 @@ router.get('/api/game/ingame/info', auth, (req, res) => {
 });
 
 router.post('/api/game/ingame/submitCard', auth, (req, res) => {
-    if (GameManager.getGameStatus() == GameManager.gameStatuses.Started) {
+    if (GameManager.getGameStatus() === GameManager.gameStatuses.Submit) {
         if (UserManager.doesUserPlay(req.user.username)) {
             try {
                 const cardId = req.body.cardId;
@@ -70,13 +70,13 @@ router.post('/api/game/ingame/submitCard', auth, (req, res) => {
                     res.send(400).send('Invalid Card ID');
                 }
             } catch (error) {
-                res.status(500).send({error});
+                res.status(500).send({ error });
             }
         } else {
-            res.status(400).send({ errorMessage: 'This user does not play at the moment!'});
+            res.status(400).send({ errorMessage: 'This user does not play at the moment!' });
         }
     } else {
-        res.status(400).send({ errorMessage: 'Game has not started yet!' });
+        res.status(400).send({ errorMessage: 'Game has not started yet or game is in reveil phase!' });
     }
 });
 

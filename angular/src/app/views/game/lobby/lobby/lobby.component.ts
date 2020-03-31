@@ -21,7 +21,12 @@ export class LobbyComponent implements OnInit {
 
   ngOnInit(): void {
     this.gameStatusSub = this.socketService.gameStatus.subscribe((status: GameStatus) => {
-      if (status === GameStatus.Started) {
+      if (status === GameStatus.Submit || status === GameStatus.Reveil) {
+        this.router.navigate(['/game/ingame']);
+      }
+    });
+    this.apiService.getGameStatus().subscribe((status: GameStatus) => {
+      if (status === GameStatus.Submit || status === GameStatus.Reveil) {
         this.router.navigate(['/game/ingame']);
       }
     });
