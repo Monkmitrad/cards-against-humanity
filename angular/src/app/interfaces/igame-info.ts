@@ -3,6 +3,6 @@ export interface IGameInfo {
         username: string;
         points: number;
         played: boolean;
-    };
+    }[];
     currentCzar: string;
 }

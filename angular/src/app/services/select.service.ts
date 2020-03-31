@@ -14,7 +14,6 @@ export class SelectService {
 
   selectWhiteCard(cardId: string) {
     this.selectedWhiteCards = [cardId];
-    console.log(this.selectedWhiteCards);
     this.selectSubject.next();
   }
 
@@ -23,12 +22,10 @@ export class SelectService {
     if (this.selectedWhiteCards.includes(id)) {
       // unselect card
       this.selectedWhiteCards.splice(this.selectedWhiteCards.indexOf(id), 1);
-      console.log(this.selectedWhiteCards);
       return false;
     } else {
       // select card
       this.selectedWhiteCards.push(id);
-      console.log(this.selectedWhiteCards);
       return true;
     }
   }
@@ -61,5 +58,9 @@ export class SelectService {
   clearCards() {
     this.selectedWhiteCards = [];
     this.selectedBlackCards = [];
+  }
+
+  clearSelect() {
+    this.selectSubject.next();
   }
 }

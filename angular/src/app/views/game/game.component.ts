@@ -6,6 +6,7 @@ import { SocketIoService } from '../../services/socket-io.service';
 import { ApiService } from '../../services/api.service';
 import { IGameInfo } from '../../interfaces/igame-info';
 import { ICard } from '../../interfaces/icard';
+import { User } from '../../models/user';
 
 @Component({
   templateUrl: 'game.component.html'
@@ -14,6 +15,7 @@ export class GameComponent implements OnInit {
 
   gameInfo: IGameInfo;
   whiteCards: ICard[];
+  ownUsername = '';
 
   constructor(
     private selectService: SelectService,
@@ -25,20 +27,36 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.selectService.clearCards();
     this.apiService.getWhiteCards().subscribe((cards: ICard[]) => this.whiteCards = cards);
+    this.socketService.gameInfo.subscribe((data: IGameInfo) => this.gameInfo = data);
+    this.apiService.getIngameInfo().subscribe((data: IGameInfo) => this.gameInfo = data);
+    this.authService.user.subscribe((user: User) => this.ownUsername = user.username);
   }
 
   submitCard() {
     const cardId: string[] = this.selectService.getSelectedWhiteCardsId();
-    this.socketService.sendMessage('Hello World');
-    this.apiService.submitCard(cardId[0]).subscribe((response) => {
-      if (response) {
-        console.log(response);
+    if (cardId.length) {
+      if (!(this.ownUsername === this.gameInfo.currentCzar)) {
+        if (!this.checkIfPlayed(this.ownUsername)) {
+          this.apiService.submitCard(cardId[0]).subscribe((response) => {if (response) { console.log(response); }});
+        } else {
+          alert('You already played a card');
+          this.selectService.clearSelect();
+        }
+      } else {
+        alert('You are the card czar!');
+        this.selectService.clearSelect();
       }
-    });
-    /*if (cardId.length) {
-      alert('Your selected card: ' + cardId);
     } else {
       alert('Please select a card');
-    }*/
+    }
+  }
+
+  checkIfPlayed(username: string): boolean {
+    const selectedUser = this.gameInfo.players.find((user) => user.username === username);
+    if (selectedUser.played) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
