@@ -16,7 +16,26 @@
       <app-player-table></app-player-table>
     </div><!--/.col-->
   </div><!--/.row-->
-  <div class="row">
+  <div class="row"  *ngIf="showPlayedCards">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <h4>Played Cards</h4>
+            <button *ngIf="canSelect" (click)="winnerCard()" class="ml-auto">Select Winner Card</button>
+          </div><!--/.row-->
+        </div><!--/.card-header-->
+        <div class="card-body">
+            <div class="card-deck">
+              <div class="col-sm5" *ngFor="let playedCard of playedCards">
+                <app-white-card [card]="playedCard.card" [parentName]="'playedCard'" [canSelect]="canSelect"></app-white-card>
+              </div>
+            </div><!--/.card-deck-->
+        </div><!--/.card-body-->
+      </div><!--/.card-->
+    </div><!--/.col-->
+  </div><!--/.row-->
+  <div class="row" *ngIf="!showPlayedCards">
     <div class="col-lg-8">
       <div class="card">
         <div class="card-header">

@@ -13,6 +13,8 @@ export class WhiteCardComponent {
   public card: ICard = {_id: '0', content: 'Test White Card' };
   @Input()
   public parentName = '';
+  @Input()
+  public canSelect = true;
 
   public select = false;
 
@@ -24,6 +26,11 @@ export class WhiteCardComponent {
 
   selectCard() {
     switch (this.parentName) {
+      case 'playedCard':
+        if (this.canSelect) {
+          this.selectService.selectWinnerCard(this.card._id);
+        }
+        break;
       case 'game':
         this.selectService.selectWhiteCard(this.card._id);
         this.select = true;

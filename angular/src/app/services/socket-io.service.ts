@@ -29,6 +29,7 @@ export class SocketIoService {
 
     this.socket.on('gameUpdate', (ingameInfo: IGameInfo) => {
       this.gameInfo.next(ingameInfo);
+      console.log(ingameInfo);
     });
   }
 

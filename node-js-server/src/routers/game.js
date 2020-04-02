@@ -8,7 +8,7 @@ const router = new express.Router();
 
 // get all logged in users
 router.get('/api/game/users', auth, async (req, res) => {
-    res.send(await UserManager.getLoggedInUsers());
+    res.send(UserManager.getLoggedInUsers());
 });
 
 // get game status
@@ -61,9 +61,13 @@ router.post('/api/game/ingame/submitCard', auth, (req, res) => {
             try {
                 const cardId = req.body.cardId;
                 if (cardId.match(/^[0-9a-fA-F]{24}$/)) {
-                    WhiteCard.findById(cardId).then(() => {
-                        GameManager.submitCard(req.user.username, cardId);
+                    WhiteCard.findById(cardId).then((card) => {
+                        GameManager.submitCard(req.user.username, cardId, card.content);
                         IoHandler.updateGame(GameManager.getIngameInfo());
+                        if(GameManager.checkSubmitted()) {
+                            console.log('All users played a card, start reveil');
+                            GameManager.startReveil();
+                        }
                         res.send();
                     });
                 } else {

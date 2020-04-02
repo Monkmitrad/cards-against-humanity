@@ -3,11 +3,10 @@ const IoHandler = require('../io/ioHandler');
 const gameStatuses = {
     NotStarted: 'NotStarted',
     Submit: 'CardSubmit',
-    Reveil: 'CardReveil'
+    Reveil: 'CardReveil',
 }
 
 let gameStatus = gameStatuses.NotStarted;
-
 
 class IngameInfo {
     constructor(players, currentCzar) {
@@ -17,7 +16,7 @@ class IngameInfo {
 }
 
 const ingameInfo = new IngameInfo([], '');
-// ingameInfo.players.push({username: 'Dieter', points: 0, played: false, playedCard: ''});
+// ingameInfo.players.push({username: 'Dieter', points: 0, played: false, playedCard: '', cardContent: ''});
 
 const getGameStatus = () => {
     return gameStatus;
@@ -28,7 +27,7 @@ const startGame = (playingUsers) => {
     gameStatus = gameStatuses.Submit;
     
     playingUsers.forEach(user => {
-        ingameInfo.players.push({username: user.username, points: 0, played: false, playedCard: ''});
+        ingameInfo.players.push({username: user.username, points: 0, played: false, playedCard: '', cardContent: ''});
     });
     ingameInfo.currentCzar = ingameInfo.players[Math.floor(Math.random() * ingameInfo.players.length)].username;
     IoHandler.sendStatus(gameStatus);
@@ -38,18 +37,14 @@ const getIngameInfo = () => {
     return ingameInfo;
 };
 
-const submitCard = (username, cardId) => {
+const submitCard = (username, cardId, cardContent) => {
     isCardCzar(username);
     hasPlayed(username);
 
     const index = ingameInfo.players.findIndex((player) => player.username === username);
     ingameInfo.players[index].playedCard = cardId;
     ingameInfo.players[index].played = true;
-
-    if(checkSubmitted()) {
-        console.log('All users played a card, start reveil');
-        startReveil();
-    }
+    ingameInfo.players[index].cardContent = cardContent;
 };
 
 const isCardCzar = (username) => {
@@ -67,11 +62,11 @@ const hasPlayed = (username) => {
 };
 
 const checkSubmitted = () => {
-    const players = ingameInfo.players; // copy of players to filter out czar
+    const ingamePlayers = [...ingameInfo.players]; // copy of players to filter out czar
     const index = ingameInfo.players.findIndex((player) => player.username === ingameInfo.currentCzar); // index of czar
-    players.splice(index, 1); // delete czar from users
-    if (players.every((player) => player.played)) {
-        // all players have submitte a card, reveil can start
+    ingamePlayers.splice(index, 1); // delete czar from users
+    if (ingamePlayers.every((player) => player.played)) {
+        // all players have submitted a card, reveil can start
         return true;
     } else {
         return false;
@@ -79,11 +74,12 @@ const checkSubmitted = () => {
 };
 
 const startReveil = () => {
-    gameStatus = gameStatuses.CardReveil;
+    gameStatus = gameStatuses.Reveil;
+    IoHandler.sendStatus(gameStatus);
 };
 
 const nextRound = () => {
 
 };
 
-module.exports = {getGameStatus, gameStatuses: gameStatuses, startGame, getIngameInfo, submitCard, checkSubmitted };
+module.exports = {getGameStatus, gameStatuses: gameStatuses, startGame, getIngameInfo, submitCard, checkSubmitted, startReveil };

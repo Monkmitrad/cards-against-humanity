@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { SelectService } from '../../services/select.service';
 import { AuthService } from '../../services/auth.service';
@@ -7,16 +7,31 @@ import { ApiService } from '../../services/api.service';
 import { IGameInfo } from '../../interfaces/igame-info';
 import { ICard } from '../../interfaces/icard';
 import { User } from '../../models/user';
+import { Subscription } from 'rxjs';
+import { GameStatus } from '../../models/game-status.enum';
 
 @Component({
   templateUrl: 'game.component.html'
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
 
   gameInfo: IGameInfo;
+  gameStatus: GameStatus;
   whiteCards: ICard[];
+  playedCards: {
+    card: ICard;
+    username: string;
+  }[] = [];
   ownUsername = '';
   disabled = false;
+  showPlayedCards = false;
+  canSelect = true;
+
+  gameStatusSub: Subscription;
+  apiSub: Subscription;
+  socketInfoSub: Subscription;
+  socketStatusSub: Subscription;
+  authSub: Subscription;
 
   constructor(
     private selectService: SelectService,
@@ -27,18 +42,53 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.selectService.clearCards();
-    this.apiService.getWhiteCards().subscribe((cards: ICard[]) => this.whiteCards = cards);
-    this.socketService.gameInfo.subscribe((data: IGameInfo) => {
+    this.apiSub = this.apiService.getWhiteCards().subscribe((cards: ICard[]) => this.whiteCards = cards);
+    this.socketInfoSub = this.socketService.gameInfo.subscribe((data: IGameInfo) => {
       if (data) {
         this.gameInfo = data;
         this.disabled = this.ownUsername === data.currentCzar;
+        data.players.forEach((player) => {
+          if (player.played) {
+            this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username});
+          }
+        });
       }
     });
     this.apiService.getIngameInfo().subscribe((data: IGameInfo) => {
       this.gameInfo = data;
       this.disabled = this.ownUsername === data.currentCzar;
+      data.players.forEach((player) => {
+        if (player.played) {
+          this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username});
+        }
+      });
+    });
+    this.gameStatusSub = this.socketService.gameStatus.subscribe((status: GameStatus) => {
+      this.gameStatus = status;
+      if (status === GameStatus.Reveil) {
+        this.showPlayedCards = true;
+        this.canSelect = this.ownUsername === this.gameInfo.currentCzar;
+      }
+    });
+    this.apiService.getGameStatus().subscribe((status: GameStatus) => {
+      this.gameStatus = status;
+      if (status === GameStatus.Reveil) {
+        this.showPlayedCards = true;
+        this.canSelect = this.ownUsername === this.gameInfo.currentCzar;
+      }
     });
     this.authService.user.subscribe((user: User) => this.ownUsername = user.username);
+  }
+
+  ngOnDestroy(): void {
+    try {
+      this.gameStatusSub.unsubscribe();
+      this.socketInfoSub.unsubscribe();
+      this.socketStatusSub.unsubscribe();
+      this.apiSub.unsubscribe();
+      this.authSub.unsubscribe();
+    } catch (error) {
+    }
   }
 
   submitCard() {
@@ -63,6 +113,10 @@ export class GameComponent implements OnInit {
     } else {
       alert('Please select a card');
     }
+  }
+
+  winnerCard() {
+    
   }
 
   checkIfPlayed(username: string): boolean {

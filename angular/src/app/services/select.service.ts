@@ -43,6 +43,10 @@ export class SelectService {
     }
   }
 
+  selectWinnerCard(id: string) {
+    
+  }
+
   selectSub(): Subject<boolean> {
     return this.selectSubject;
   }

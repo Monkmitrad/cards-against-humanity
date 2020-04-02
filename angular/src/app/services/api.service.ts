@@ -188,7 +188,9 @@ export class ApiService {
 
   getIngameInfo() {
     return this.http.get('/api/game/ingame/info').pipe(
-      catchError((error: HttpErrorResponse) => this.handleError), map((data: {info: IGameInfo}) => data.info)
+      catchError((error: HttpErrorResponse) => this.handleError), map((data: {info: IGameInfo}) => {
+        return data.info;
+      })
     );
   }
 
