@@ -199,4 +199,10 @@ export class ApiService {
       tap((data) => data, (error) => this.handleError(error))
     );
   }
+
+  winnerCard(cardId: string) {
+    return this.http.post('/api/game/ingame/winnerCard', {cardId}).pipe(
+      tap((data) => data, (error) => this.handleError(error))
+    );
+  }
 }

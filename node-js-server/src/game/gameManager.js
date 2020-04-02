@@ -78,8 +78,17 @@ const startReveil = () => {
     IoHandler.sendStatus(gameStatus);
 };
 
+const winnerCard = (cardId, username) => {
+    const winningPlayerIndex = ingameInfo.players.findIndex((player) => player.played && player.playedCard === cardId);
+    ingameInfo.players[winningPlayerIndex].points++;
+    if (ingameInfo.players[winningPlayerIndex].points >= 6) {
+        // player has won the game
+        console.log(ingameInfo.players[winningPlayerIndex].username, 'has won the game!');
+    }
+};
+
 const nextRound = () => {
 
 };
 
-module.exports = {getGameStatus, gameStatuses: gameStatuses, startGame, getIngameInfo, submitCard, checkSubmitted, startReveil };
+module.exports = {getGameStatus, gameStatuses: gameStatuses, startGame, getIngameInfo, submitCard, checkSubmitted, startReveil, winnerCard };

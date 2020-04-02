@@ -44,7 +44,7 @@ export class SelectService {
   }
 
   selectWinnerCard(id: string) {
-    
+    this.selectedWhiteCards = [id];
   }
 
   selectSub(): Subject<boolean> {

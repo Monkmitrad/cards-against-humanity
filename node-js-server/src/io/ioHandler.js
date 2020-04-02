@@ -28,4 +28,8 @@ const updateGame = (ingameInfo) => {
     io.emit('gameUpdate', ingameInfo);
 };
 
-module.exports = { socketHandler, onUserJoined, updateClients, sendStatus, updateGame };
+const winnerCard = (username) => {
+    io.emit('winnerCard', username);
+}
+
+module.exports = { socketHandler, onUserJoined, updateClients, sendStatus, updateGame, winnerCard };

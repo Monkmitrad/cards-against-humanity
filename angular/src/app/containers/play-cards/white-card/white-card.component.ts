@@ -29,6 +29,7 @@ export class WhiteCardComponent {
       case 'playedCard':
         if (this.canSelect) {
           this.selectService.selectWinnerCard(this.card._id);
+          this.select = true;
         }
         break;
       case 'game':

@@ -55,6 +55,7 @@ router.get('/api/game/ingame/info', auth, (req, res) => {
     }
 });
 
+// user submits a card to play
 router.post('/api/game/ingame/submitCard', auth, (req, res) => {
     if (GameManager.getGameStatus() === GameManager.gameStatuses.Submit) {
         if (UserManager.doesUserPlay(req.user.username)) {
@@ -81,6 +82,33 @@ router.post('/api/game/ingame/submitCard', auth, (req, res) => {
         }
     } else {
         res.status(400).send({ errorMessage: 'Game has not started yet or game is in reveil phase!' });
+    }
+});
+
+// czar selects a winner card
+router.post('/api/game/ingame/winnerCard', auth, (req, res) => {
+    if (GameManager.getGameStatus() === GameManager.gameStatuses.Reveil) {
+        if (UserManager.doesUserPlay(req.user.username)) {
+            try {
+                const cardId = req.body.cardId;
+                if (cardId.match(/^[0-9a-fA-F]{24}$/)) {
+                    WhiteCard.findById(cardId).then((card) => {
+                        GameManager.winnerCard(cardId, req.user.username);
+                        IoHandler.winnerCard(req.user.username);
+                        IoHandler.updateGame(GameManager.getIngameInfo());
+                    });
+                    res.send();
+                } else {
+                    res.send(400).send('Invalid Card ID');
+                }
+            } catch (error) {
+                res.status(500).send({ error });
+            }
+        } else {
+            res.status(400).send({ errorMessage: 'This user does not play at the moment!' });
+        }
+    } else {
+        res.status(400).send({ errorMessage: 'Game has not started yet or game is in submit phase!' });
     }
 });
 

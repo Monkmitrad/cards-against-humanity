@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { LoggedInUsers } from '../containers/lobby-table/lobby-table.component';
 import { GameStatus } from '../models/game-status.enum';
 import { IGameInfo } from '../interfaces/igame-info';
@@ -13,6 +13,7 @@ export class SocketIoService {
   joinedUsers: BehaviorSubject<LoggedInUsers[]> = new BehaviorSubject<LoggedInUsers[]>([]);
   gameStatus: BehaviorSubject<GameStatus> = new BehaviorSubject<GameStatus>(GameStatus.NotStarted);
   gameInfo: BehaviorSubject<IGameInfo> = new BehaviorSubject<IGameInfo>(null);
+  winnerCard: Subject<string> = new Subject<string>();
 
   constructor(private socket: Socket) {
     this.socket.on('userJoined', (message: string) => {
@@ -29,7 +30,10 @@ export class SocketIoService {
 
     this.socket.on('gameUpdate', (ingameInfo: IGameInfo) => {
       this.gameInfo.next(ingameInfo);
-      console.log(ingameInfo);
+    });
+
+    this.socket.on('winnerCard', (username: string) => {
+      this.winnerCard.next(username);
     });
   }
 

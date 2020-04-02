@@ -47,16 +47,19 @@ export class GameComponent implements OnInit, OnDestroy {
       if (data) {
         this.gameInfo = data;
         this.disabled = this.ownUsername === data.currentCzar;
+        this.playedCards = [];
         data.players.forEach((player) => {
           if (player.played) {
             this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username});
           }
+          console.log(this.playedCards);
         });
       }
     });
     this.apiService.getIngameInfo().subscribe((data: IGameInfo) => {
       this.gameInfo = data;
       this.disabled = this.ownUsername === data.currentCzar;
+      this.playedCards = [];
       data.players.forEach((player) => {
         if (player.played) {
           this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username});
@@ -116,7 +119,12 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   winnerCard() {
-    
+    const cardId: string = this.selectService.getSelectedWhiteCardsId()[0];
+    this.apiService.winnerCard(cardId).subscribe((response) => {
+      if (response) {
+        console.log(response);
+      }
+    });
   }
 
   checkIfPlayed(username: string): boolean {
