@@ -52,7 +52,6 @@ export class GameComponent implements OnInit, OnDestroy {
           if (player.played) {
             this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username});
           }
-          console.log(this.playedCards);
         });
       }
     });

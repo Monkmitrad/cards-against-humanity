@@ -1,4 +1,5 @@
 const IoHandler = require('../io/ioHandler');
+const ioHandler = require('../io/ioHandler');
 
 const gameStatuses = {
     NotStarted: 'NotStarted',
@@ -84,11 +85,23 @@ const winnerCard = (cardId, username) => {
     if (ingameInfo.players[winningPlayerIndex].points >= 6) {
         // player has won the game
         console.log(ingameInfo.players[winningPlayerIndex].username, 'has won the game!');
+    } else {
+        nextRound();
     }
 };
 
 const nextRound = () => {
-
+    gameStatus = gameStatuses.Submit;
+    // get index of current czar
+    const index = ingameInfo.players.findIndex((player) => player.username === ingameInfo.currentCzar);
+    // determine next czar
+    if (ingameInfo.players.length - 1 === index) {
+        ingameInfo.currentCzar = ingameInfo.players[0].username;
+    } else {
+        ingameInfo.currentCzar = ingameInfo.players[index + 1].username;
+    }
+    IoHandler.updateGame(getIngameInfo());
+    IoHandler.sendStatus(gameStatus);
 };
 
 module.exports = {getGameStatus, gameStatuses: gameStatuses, startGame, getIngameInfo, submitCard, checkSubmitted, startReveil, winnerCard };
