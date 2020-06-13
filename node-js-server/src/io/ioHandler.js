@@ -3,7 +3,7 @@ const UserManager = require('../game/userManager');
 let io = undefined;
 
 const socketHandler = function(_io, socket) {
-    console.log('New WebSocket connection');
+    // console.log('New WebSocket connection');
     io = _io;
 
     socket.on('message', (message) => {

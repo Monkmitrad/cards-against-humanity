@@ -31,7 +31,8 @@ const startGame = (playingUsers) => {
         ingameInfo.players.push({username: user.username, points: 0, played: false, playedCard: '', cardContent: ''});
     });
     ingameInfo.currentCzar = ingameInfo.players[Math.floor(Math.random() * ingameInfo.players.length)].username;
-    IoHandler.sendStatus(gameStatus);
+    IoHandler.updateGame(getIngameInfo());
+    IoHandler.sendStatus(getGameStatus());
 };
 
 const getIngameInfo = () => {
@@ -76,7 +77,7 @@ const checkSubmitted = () => {
 
 const startReveil = () => {
     gameStatus = gameStatuses.Reveil;
-    IoHandler.sendStatus(gameStatus);
+    IoHandler.sendStatus(getGameStatus());
 };
 
 const winnerCard = (cardId, username) => {
@@ -103,10 +104,12 @@ const nextRound = () => {
     // clean played cards
     ingameInfo.players.forEach(player => {
         player.playedCard = "";
+        player.cardContent = "";
+        player.played = false;
     });
     // update game status
     IoHandler.updateGame(getIngameInfo());
-    IoHandler.sendStatus(gameStatus);
+    IoHandler.sendStatus(getGameStatus());
 };
 
 module.exports = {getGameStatus, gameStatuses: gameStatuses, startGame, getIngameInfo, submitCard, checkSubmitted, startReveil, winnerCard };

@@ -75,8 +75,6 @@ export class GameComponent implements OnInit, OnDestroy {
         case GameStatus.Submit:
           this.showPlayedCards = false;
           this.canSelect = this.ownUsername === this.gameInfo.currentCzar;
-          console.log(this.playedCards);
-
         default:
           break;
       }
