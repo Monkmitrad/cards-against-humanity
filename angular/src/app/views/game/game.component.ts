@@ -67,9 +67,18 @@ export class GameComponent implements OnInit, OnDestroy {
     });
     this.gameStatusSub = this.socketService.gameStatus.subscribe((status: GameStatus) => {
       this.gameStatus = status;
-      if (status === GameStatus.Reveil) {
-        this.showPlayedCards = true;
-        this.canSelect = this.ownUsername === this.gameInfo.currentCzar;
+      switch (status) {
+        case GameStatus.Reveil:
+          this.showPlayedCards = true;
+          this.canSelect = this.ownUsername === this.gameInfo.currentCzar;
+          break;
+        case GameStatus.Submit:
+          this.showPlayedCards = false;
+          this.canSelect = this.ownUsername === this.gameInfo.currentCzar;
+          console.log(this.playedCards);
+
+        default:
+          break;
       }
     });
     this.apiService.getGameStatus().subscribe((status: GameStatus) => {

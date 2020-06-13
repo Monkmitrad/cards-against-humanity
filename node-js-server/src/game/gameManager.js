@@ -100,6 +100,11 @@ const nextRound = () => {
     } else {
         ingameInfo.currentCzar = ingameInfo.players[index + 1].username;
     }
+    // clean played cards
+    ingameInfo.players.forEach(player => {
+        player.playedCard = "";
+    });
+    // update game status
     IoHandler.updateGame(getIngameInfo());
     IoHandler.sendStatus(gameStatus);
 };
