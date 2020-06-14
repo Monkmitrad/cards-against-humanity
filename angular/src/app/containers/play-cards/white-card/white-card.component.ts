@@ -33,8 +33,10 @@ export class WhiteCardComponent {
         }
         break;
       case 'game':
-        this.selectService.selectWhiteCard(this.card._id);
-        this.select = true;
+        if (this.canSelect) {
+          this.selectService.selectWhiteCard(this.card._id);
+          this.select = true;
+        }
         break;
       case 'whiteCardsDeck':
         this.select = this.selectService.multiSelectWhiteCard(this.card._id);
