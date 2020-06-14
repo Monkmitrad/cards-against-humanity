@@ -3,7 +3,7 @@
         <div class="card-title" [ngClass]="select ? 'selected' : ''">
             <h5>White Card</h5>
         </div><!--/.card-title-->
-        <div class="card-text">
+        <div class="card-text" [ngClass]="reveiled ? 'bg-dark' : ''">
             {{ card.content }}
         </div><!--/.card-text-->
     </div><!--/.card-body-->

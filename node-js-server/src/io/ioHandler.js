@@ -9,6 +9,11 @@ const socketHandler = function(_io, socket) {
     socket.on('message', (message) => {
         console.log(message);
     });
+
+    socket.on('reveil', (id) => {
+        io.emit('reveil', id);
+        console.log('Card reveiled', id);
+    });
 };
 
 const onUserJoined = (username) => {

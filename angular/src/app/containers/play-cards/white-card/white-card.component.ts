@@ -1,4 +1,4 @@
-import {Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { SelectService } from '../../../services/select.service';
 import { ICard } from '../../../interfaces/icard';
@@ -10,11 +10,13 @@ import { ICard } from '../../../interfaces/icard';
 })
 export class WhiteCardComponent {
   @Input()
-  public card: ICard = {_id: '0', content: 'Test White Card' };
+  public card: ICard = { _id: '0', content: 'Test White Card'};
   @Input()
   public parentName = '';
   @Input()
   public canSelect = true;
+  @Input()
+  public reveiled = false;
 
   public select = false;
 
@@ -27,12 +29,20 @@ export class WhiteCardComponent {
   selectCard() {
     switch (this.parentName) {
       case 'playedCard':
+        // check if user is czar
         if (this.canSelect) {
-          this.selectService.selectWinnerCard(this.card._id);
-          this.select = true;
+          // check if card is reveiled
+          if (this.reveiled) {
+            this.selectService.selectWinnerCard(this.card._id);
+            this.select = true;
+          } else {
+            console.log(this.reveiled);
+            this.selectService.reveilCard(this.card._id);
+          }
         }
         break;
       case 'game':
+        // check if user is not czar
         if (this.canSelect) {
           this.selectService.selectWhiteCard(this.card._id);
           this.select = true;

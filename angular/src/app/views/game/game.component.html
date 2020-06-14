@@ -28,7 +28,7 @@
         <div class="card-body">
             <div class="card-deck">
               <div class="col-sm5" *ngFor="let playedCard of playedCards">
-                <app-white-card [card]="playedCard.card" [parentName]="'playedCard'" [canSelect]="canSelect"></app-white-card>
+                <app-white-card [card]="playedCard.card" [parentName]="'playedCard'" [canSelect]="canSelect" [reveiled]="playedCard.reveiled"></app-white-card>
               </div>
             </div><!--/.card-deck-->
         </div><!--/.card-body-->

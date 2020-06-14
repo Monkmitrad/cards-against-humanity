@@ -28,7 +28,7 @@ const startGame = (playingUsers) => {
     gameStatus = gameStatuses.Submit;
     
     playingUsers.forEach(user => {
-        ingameInfo.players.push({username: user.username, points: 0, played: false, playedCard: '', cardContent: ''});
+        ingameInfo.players.push({username: user.username, points: 0, played: false, playedCard: '', cardContent: '', reveiled: false});
     });
     ingameInfo.currentCzar = ingameInfo.players[Math.floor(Math.random() * ingameInfo.players.length)].username;
     IoHandler.updateGame(getIngameInfo());
@@ -106,6 +106,7 @@ const nextRound = () => {
         player.playedCard = "";
         player.cardContent = "";
         player.played = false;
+        player.reveiled = false;
     });
     // update game status
     IoHandler.updateGame(getIngameInfo());

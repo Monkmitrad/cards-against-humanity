@@ -21,6 +21,7 @@ export class GameComponent implements OnInit, OnDestroy {
   playedCards: {
     card: ICard;
     username: string;
+    reveiled: boolean;
   }[] = [];
   ownUsername = '';
   disabled = false;
@@ -31,6 +32,7 @@ export class GameComponent implements OnInit, OnDestroy {
   apiSub: Subscription;
   socketInfoSub: Subscription;
   socketStatusSub: Subscription;
+  socketReveilSub: Subscription;
   authSub: Subscription;
 
   constructor(
@@ -49,8 +51,9 @@ export class GameComponent implements OnInit, OnDestroy {
         this.disabled = this.ownUsername === data.currentCzar;
         this.playedCards = [];
         data.players.forEach((player) => {
+          console.log(player);
           if (player.played) {
-            this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username});
+            this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username, reveiled: player.reveiled});
           }
         });
       }
@@ -61,7 +64,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.playedCards = [];
       data.players.forEach((player) => {
         if (player.played) {
-          this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username});
+          this.playedCards.push({card: {_id: player.playedCard, content: player.cardContent}, username: player.username, reveiled: player.reveiled});
         }
       });
     });
@@ -79,6 +82,13 @@ export class GameComponent implements OnInit, OnDestroy {
         default:
           break;
       }
+    });
+    this.socketReveilSub = this.socketService.reveiledCard.subscribe((id: string) => {
+      const reveiledCardIndex: number = this.playedCards.findIndex((cardSet: {card: ICard, username: string}) => {
+        return cardSet.card._id === id;
+      });
+      console.log(reveiledCardIndex);
+      this.playedCards[reveiledCardIndex].reveiled = true;
     });
     this.apiService.getGameStatus().subscribe((status: GameStatus) => {
       this.gameStatus = status;

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SocketIoService } from './socket-io.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class SelectService {
   selectedWhiteCards: string[] = [];
   selectedBlackCards: string[] = [];
 
-  constructor() { }
+  constructor(private socketService: SocketIoService) { }
 
   selectWhiteCard(cardId: string) {
     this.selectedWhiteCards = [cardId];
@@ -45,6 +46,10 @@ export class SelectService {
 
   selectWinnerCard(id: string) {
     this.selectedWhiteCards = [id];
+  }
+
+  reveilCard(id: string) {
+    this.socketService.reveilCard(id);
   }
 
   selectSub(): Subject<boolean> {

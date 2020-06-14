@@ -10,10 +10,12 @@ import { IGameInfo } from '../interfaces/igame-info';
 })
 export class SocketIoService {
 
+
   joinedUsers: BehaviorSubject<LoggedInUsers[]> = new BehaviorSubject<LoggedInUsers[]>([]);
   gameStatus: BehaviorSubject<GameStatus> = new BehaviorSubject<GameStatus>(GameStatus.NotStarted);
   gameInfo: BehaviorSubject<IGameInfo> = new BehaviorSubject<IGameInfo>(null);
   winnerCard: Subject<string> = new Subject<string>();
+  reveiledCard: Subject<string> = new Subject<string>();
 
   constructor(private socket: Socket) {
     this.socket.on('userJoined', (message: string) => {
@@ -35,9 +37,18 @@ export class SocketIoService {
     this.socket.on('winnerCard', (username: string) => {
       this.winnerCard.next(username);
     });
+
+    this.socket.on('reveil', (id: string) => {
+      console.log(id);
+      this.reveiledCard.next(id);
+    });
   }
 
   sendMessage(message: string): void {
     this.socket.emit('message', message);
+  }
+
+  reveilCard(id: string) {
+    this.socket.emit('reveil', id);
   }
 }

@@ -5,6 +5,7 @@ export interface IGameInfo {
         played: boolean;
         playedCard: string;
         cardContent: string;
+        reveiled: boolean;
     }[];
     currentCzar: string;
 }
